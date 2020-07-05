@@ -34,12 +34,16 @@ filetype plugin indent on    " required
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 colorscheme jellybeans
+set background=dark
+set t_Co=256
 set ts=4
 set sw=4
 set sts=4
 set autoindent
 set smartindent
 set cindent
+set hlsearch
+syntax on
 nnoremap <leader>q :bp<CR>
 nnoremap <leader>w :bn<CR>
 
