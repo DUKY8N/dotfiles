@@ -6,6 +6,7 @@ filetype off                  " required
 " set the runtime path to include Vundle and initialize
 set rtp+=~/.vim/bundle/Vundle.vim
 call vundle#begin()
+
 Plugin 'gmarik/Vundle.vim'
 Plugin 'nanotech/jellybeans.vim'
 Plugin 'majutsushi/tagbar'
@@ -14,6 +15,12 @@ Plugin 'airblade/vim-gitgutter' " vim with git status(added, modified, and remov
 Plugin 'tpope/vim-fugitive' " vim with git command(e.g., Gdiff)
 Plugin 'vim-airline/vim-airline' " vim status bar
 Plugin 'vim-airline/vim-airline-themes'
+Plugin 'nathanaelkane/vim-indent-guides'
+Plugin 'blueyed/vim-diminactive'
+Plugin 'Valloric/YouCompleteMe' " install 'cmake' & 'python3-dev' before installing YCM
+" python3 install.py --help
+" python3 install.py --go-completer --ts-completer
+
 call vundle#end()            " required
 filetype plugin indent on    " required
 " To ignore plugin indent changes, instead use:
@@ -26,13 +33,15 @@ filetype plugin indent on    " required
 "
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
-colorscheme ron
+colorscheme jellybeans
 set ts=4
 set sw=4
 set sts=4
 set autoindent
 set smartindent
 set cindent
+nnoremap <leader>q :bp<CR>
+nnoremap <leader>w :bn<CR>
 
 " for compile
 map <C-j> :w<CR>:!clear;gcc -W -Wall %;./a.out<CR>
@@ -57,6 +66,22 @@ cnoremap <C-l> <Right>
 let g:airline#extensions#tabline#enabled = 1 " turn on buffer list
 set laststatus=2 " turn on bottom bar
 let mapleader = ","
-let g:airline_theme='zenburn'
-nnoremap <leader>q :bp<CR>
-nnoremap <leader>w :bn<CR>
+let g:airline_theme='base16_chalk'
+
+" for ycm
+let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
+let g:ycm_confirm_extra_conf = 0
+" let g:ycm_key_list_select_completion = ['', '']
+" let g:ycm_key_list_previous_completion = ['', '']
+let g:ycm_autoclose_preview_window_after_completion = 1
+let g:ycm_warning_symbol = '>*'
+
+" for blueyed/vim-diminactive
+let g:diminactive_enable_focus = 1
+
+" for indent guide
+let g:indentguides_spacechar = '??'
+let g:indentguides_tabchar = '|'
+let g:indent_guides_enable_on_vim_startup = 1
+let g:indent_guides_start_level=2
+let g:indent_guides_guide_size=1
