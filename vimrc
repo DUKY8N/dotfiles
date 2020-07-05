@@ -44,6 +44,7 @@ set smartindent
 set cindent
 set hlsearch
 syntax on
+let mapleader = ","
 nnoremap <leader>q :bp<CR>
 nnoremap <leader>w :bn<CR>
 
@@ -69,7 +70,6 @@ cnoremap <C-l> <Right>
 " for vim-airline
 let g:airline#extensions#tabline#enabled = 1 " turn on buffer list
 set laststatus=2 " turn on bottom bar
-let mapleader = ","
 let g:airline_theme='base16_chalk'
 
 " for ycm
