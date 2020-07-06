@@ -17,6 +17,9 @@ Plugin 'vim-airline/vim-airline' " vim status bar
 Plugin 'vim-airline/vim-airline-themes'
 Plugin 'nathanaelkane/vim-indent-guides'
 Plugin 'blueyed/vim-diminactive'
+Plugin 'jiangmiao/auto-pairs'
+Plugin 'https://github.com/tpope/vim-surround'
+Plugin 'https://github.com/johngrib/vim-game-code-break.git'
 Plugin 'Valloric/YouCompleteMe' " install 'cmake' & 'python3-dev' before installing YCM
 " python3 install.py --help
 " python3 install.py --go-completer --ts-completer
@@ -43,19 +46,18 @@ set autoindent
 set smartindent
 set cindent
 set hlsearch
+set backspace=indent,eol,start
 syntax on
 let mapleader = ","
+
+" for buffer move
 nnoremap <leader>q :bp<CR>
 nnoremap <leader>w :bn<CR>
 
 " for compile
-map <C-j> :w<CR>:!clear;gcc -W -Wall %;./a.out<CR>
-map <C-k> :w<CR>:!clear;g++ %;./a.out<CR>
-
-" for parenthesis autocomplete
-inoremap { {}<left>
-inoremap {<CR> {<CR>}<ESC>O
-inoremap {;<CR> {<CR>};<ESC>O
+map <C-j> :w<CR>:!clear;gcc -W -Wall -g %;./a.out<CR>
+map <C-k> :w<CR>:!clear;g++ -W -Wall -g %;./a.out<CR>
+map <C-l> :!gdb a.out<CR>
 
 " In insert or command mode, move normally by using Ctrl
 inoremap <C-h> <Left>
@@ -73,6 +75,7 @@ set laststatus=2 " turn on bottom bar
 let g:airline_theme='base16_chalk'
 
 " for ycm
+let g:ycm_server_python_interpreter='/usr/bin/python3'
 let g:ycm_global_ycm_extra_conf = '~/.vim/.ycm_extra_conf.py'
 let g:ycm_confirm_extra_conf = 0
 " let g:ycm_key_list_select_completion = ['', '']
