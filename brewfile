@@ -1,0 +1,83 @@
+tap "homebrew/bundle"
+brew "neovim"
+brew "lsd"
+brew "yazi"
+brew "tmux"
+brew "lazygit"
+brew "lazydocker"
+brew "lazysql"
+brew "chezmoi"
+brew "node"
+brew "bat"
+brew "fd"
+brew "fzf"
+brew "git"
+brew "git-delta"
+brew "gh"
+brew "btop"
+brew "mas"
+brew "yt-dlp"
+brew "ffmpeg"
+brew "zellij"
+brew "helix"
+brew "fastfetch"
+brew "mpv"
+brew "pandoc"
+brew "poppler"
+brew "resvg"
+brew "rust"
+brew "rust-analyzer"
+brew "sevenzip"
+brew "swiftly"
+brew "tldr"
+
+
+cask "ghostty"
+cask "raycast"
+cask "jordanbaird-ice"
+cask "chatgpt"
+cask "cleanshot"
+cask "runjs"
+cask "hammerspoon"
+cask "betterdisplay"
+cask "docker-desktop"
+cask "discord"
+cask "anki"
+cask "visual-studio-code"
+cask "mission-control-plus"
+cask "adguard"
+cask "itsycal"
+cask "obsidian"
+cask "deepl"
+cask "google-chrome"
+cask "thebrowsercompany-dia"
+cask "zen"
+cask "gureumkim"
+cask "iina"
+cask "ridibooks"
+cask "signal"
+cask "stats"
+
+cask "font-iosevka-nerd-font"
+cask "font-comic-mono"
+cask "font-pretendard"
+
+mas "Amphetamine", id: 937984704
+mas "BandiNamer", id: 6451223045
+mas "Bandizip", id: 1265704574
+mas "ExcalidrawZ", id: 6636493997
+mas "Flow", id: 1423210932
+mas "Gestimer", id: 6447125648
+mas "GitGrass", id: 1501139279
+mas "Gifski", id: 1351639930
+mas "HazeOver", id: 430798174
+mas "KakaoTalk", id: 869223134
+mas "Klack", id: 6446206067
+mas "Lookupper", id: 1667225994
+mas "News Explorer", id: 1032670789
+mas "One Thing", id: 1604176982
+mas "OwlOCR", id: 6462355119
+mas "Subscriptions", id: 1577082754
+mas "Typibara", id: 6701996122
+mas "Things", id: 904280696
+mas "Xcode", id: 497799835
