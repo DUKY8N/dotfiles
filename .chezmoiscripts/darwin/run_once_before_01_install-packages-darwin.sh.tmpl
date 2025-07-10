@@ -1,6 +1,13 @@
 #!/bin/bash
 set -euo pipefail
 
+# Prevent sleep while running
+caffeinate -dimsu -w $$ &
+CAFFEINATE_PID=$!
+cleanup() { kill "$CAFFEINATE_PID" 2>/dev/null || true; }
+trap cleanup EXIT INT TERM
+
+# Homebrew
 if ! command -v brew >/dev/null; then
   printf "\nHomebrew not found. Installing Homebrew...\n"
   /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
@@ -8,6 +15,9 @@ else
   printf "\nHomebrew found. Continuing...\n"
 fi
 
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+# Oh-My-Zsh
 if [ ! -d "$HOME/.oh-my-zsh" ]; then
   printf "\nOh-My-Zsh not found. Installing Oh-My-Zsh...\n"
   sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
@@ -15,5 +25,6 @@ else
   printf "\nOh-My-Zsh found. Continuing...\n"
 fi
 
+# Brewfile
 printf "\nSyncing Homebrew packages...\n"
 brew bundle --verbose --file="{{ .chezmoi.sourceDir }}/Brewfile"
