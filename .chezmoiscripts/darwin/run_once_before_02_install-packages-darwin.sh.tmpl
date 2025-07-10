@@ -1,0 +1,9 @@
+#!/bin/bash
+
+# terminal remove ttys 
+touch ~/.hushlogin
+
+# Update macOS settings
+printf '\nInitiating macOS update...\n'
+sh {{ .chezmoi.sourceDir }}/.macos
+
