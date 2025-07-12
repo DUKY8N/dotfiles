@@ -18,11 +18,17 @@ apps=(
 )
 
 for app in "${apps[@]}"; do
-  open -a "$app"
+  open -a "$app" || echo "⚠️  $app not found"
 done
 
 for app in "${apps[@]}"; do
-  osascript -e \
-  "tell application \"System Events\" \
-     to make login item at end with properties {path:\"/Applications/${app}.app\", hidden:false}"
+  [[ -d "/Applications/${app}.app" ]] || continue
+  /usr/bin/osascript <<EOF
+tell application "System Events"
+  make login item at end with properties { \
+    name:"${app}", \
+    path:"/Applications/${app}.app", \
+    hidden:false}
+end tell
+EOF
 done
