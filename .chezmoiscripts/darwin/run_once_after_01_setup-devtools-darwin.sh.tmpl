@@ -1,4 +1,8 @@
 #!/bin/bash
 set -euo pipefail
 
+# Init Swift toolchains
 swiftly init --assume-yes --no-modify-profile --verbose
+
+# Install remaining languages via mise
+mise install
