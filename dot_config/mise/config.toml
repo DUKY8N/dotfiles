@@ -1,0 +1,5 @@
+[tools]
+java = "latest"
+lua = "latest"
+node = "latest"
+python = "latest"
