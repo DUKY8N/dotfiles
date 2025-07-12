@@ -19,7 +19,7 @@ xcode-select --install
 ```bash
 sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply DUKY8N
 ```
-Prevent system sleep during setup
+
 4. Stop sleep prevention
 
 ```bash
