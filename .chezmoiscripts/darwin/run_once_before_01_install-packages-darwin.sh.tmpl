@@ -1,12 +1,6 @@
 #!/bin/bash
 set -euo pipefail
 
-# Prevent sleep while running
-caffeinate -dimsu -w $$ &
-CAFFEINATE_PID=$!
-cleanup() { kill "$CAFFEINATE_PID" 2>/dev/null || true; }
-trap cleanup EXIT INT TERM
-
 # Homebrew
 if ! command -v brew >/dev/null; then
   printf "\nHomebrew not found. Installing Homebrew...\n"
