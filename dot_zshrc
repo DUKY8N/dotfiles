@@ -26,3 +26,5 @@ alias vim="nvim"
 # load swiftly environment
 . "$HOME/.swiftly/env.sh"
 
+# mise
+eval "$(~/.local/bin/mise activate zsh)"
