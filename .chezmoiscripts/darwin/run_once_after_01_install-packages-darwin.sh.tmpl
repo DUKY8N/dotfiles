@@ -1,0 +1,28 @@
+#!/bin/bash
+apps=(
+  "raycast"
+  "ice"
+  "flow"
+  "adguard"
+  "amphetamine"
+  "hammerspoon"
+  "cleanshot x"
+  "betterdisplay"
+  "itsycal"
+  "deepl"
+  "mission control plus"
+  "hazeover"
+  "typibara"
+  "lookupper"
+  "klack"
+)
+
+for app in "${apps[@]}"; do
+  open -a "$app"
+done
+
+for app in "${apps[@]}"; do
+  osascript -e \
+  "tell application \"System Events\" \
+     to make login item at end with properties {path:\"/Applications/${app}.app\", hidden:false}"
+done
