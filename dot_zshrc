@@ -27,4 +27,5 @@ alias vim="nvim"
 . "$HOME/.swiftly/env.sh"
 
 # mise
-eval "$(~/.local/bin/mise activate zsh)"
+eval "$(mise activate zsh)"
+eval "$(mise completion zsh)"
