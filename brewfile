@@ -29,6 +29,13 @@ brew "rust-analyzer"
 brew "sevenzip"
 brew "swiftly"
 brew "tldr"
+brew "asciinema"
+brew "ripgrep"
+brew "sd"
+brew "dust"
+brew "posting"
+brew "diskonaut"
+brew "mise"
 
 
 cask "ghostty"
