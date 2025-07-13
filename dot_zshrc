@@ -12,12 +12,14 @@ plugins=(
 
 . "$ZSH/oh-my-zsh.sh"
 
-# lsd alias
-alias ls="lsd --group-directories-first"
-alias l="ls -l"
-alias la="ls -a"
-alias lla="ls -la"
-alias lt="ls --tree"
+# eza
+export EZA_CONFIG_DIR="$HOME/.config/eza"
+alias ls='eza --group-directories-first --icons'
+alias l='ls --long --git --color-scale=all'
+alias la='l --all'
+alias ll='l --octal-permissions --group --header'
+alias lla='ll --all'
+alias lt='ls --tree --level=2'
 
 # tldr alias
 alias tldr='LANG=ko tldr'
