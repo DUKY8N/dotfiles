@@ -39,6 +39,7 @@ brew "mise"
 brew "convmv"
 brew "termshark"
 brew "jj"
+brew "vivid"
 
 
 cask "ghostty"
