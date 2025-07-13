@@ -19,6 +19,9 @@ alias la="ls -a"
 alias lla="ls -la"
 alias lt="ls --tree"
 
+# fix nfd to ndc alias
+alias fxkr="convmv -r -f utf8 -t utf8 --nfc --notest"
+
 # nvim
 export EDITOR="nvim"
 alias vim="nvim"
