@@ -35,6 +35,7 @@ brew "dust"
 brew "posting"
 brew "diskonaut"
 brew "mise"
+brew "convmv"
 
 
 cask "ghostty"
