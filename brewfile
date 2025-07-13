@@ -64,6 +64,7 @@ cask "signal"
 cask "stats"
 
 cask "font-iosevka-nerd-font"
+cask "font-d2coding-nerd-font""
 cask "font-comic-mono"
 cask "font-pretendard"
 
