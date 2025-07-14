@@ -37,6 +37,7 @@ brew "mise"
 brew "convmv" # 파일명 인코딩 변환기
 brew "termshark"
 brew "vivid" # LS_COLORS 테마 적용 도구
+brew "uv"
 
 
 cask "ghostty"
