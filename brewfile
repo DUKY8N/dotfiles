@@ -7,7 +7,7 @@ brew "lazydocker"
 brew "lazysql"
 brew "chezmoi"
 brew "bat"
-brew "fd"
+brew "fd" # find 개선 도구
 brew "fzf"
 brew "git"
 brew "git-delta"
@@ -19,24 +19,24 @@ brew "ffmpeg"
 brew "helix"
 brew "fastfetch"
 brew "mpv"
-brew "pandoc"
+brew "pandoc" # 문서 포맷 변환기
 brew "poppler"
-brew "resvg"
+brew "resvg" # SVG 렌더링 도구 (yazi에서 사용)
 brew "rust"
 brew "rust-analyzer"
-brew "sevenzip"
+brew "sevenzip" # 압축 도구 (yazi에서 사용)
 brew "swiftly"
 brew "tlrc"
-brew "asciinema"
-brew "ripgrep"
-brew "sd"
-brew "dust"
+brew "asciinema" # 터미널 세션을 녹화/공유하는 도구
+brew "ripgrep" # grep 개선 도구
+brew "sd" # sed 개선 도구
+brew "dust" # du 개선 도구 # 디스크 사용량을 시각화하는 도구
 brew "posting"
-brew "diskonaut"
+brew "diskonaut" # 디스크 사용량을 시각화하는 도구
 brew "mise"
-brew "convmv"
+brew "convmv" # 파일명 인코딩 변환기
 brew "termshark"
-brew "vivid"
+brew "vivid" # LS_COLORS 테마 적용 도구
 
 
 cask "ghostty"
