@@ -40,3 +40,7 @@ alias vim="nvim"
 # mise
 eval "$(mise activate zsh)"
 eval "$(mise completion zsh)"
+
+# zoxide
+eval "$(zoxide init zsh)"
+alias cd='z'
