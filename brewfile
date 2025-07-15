@@ -41,6 +41,7 @@ brew "uv"
 brew "docker"
 brew "docker-compose"
 brew "colima" # Docker Desktop 대체
+brew "zoxide"
 
 
 cask "ghostty"
