@@ -38,6 +38,9 @@ brew "convmv" # 파일명 인코딩 변환기
 brew "termshark"
 brew "vivid" # LS_COLORS 테마 적용 도구
 brew "uv"
+brew "docker"
+brew "docker-compose"
+brew "colima" # Docker Desktop 대체
 
 
 cask "ghostty"
@@ -48,7 +51,6 @@ cask "cleanshot"
 cask "runjs"
 cask "hammerspoon"
 cask "betterdisplay"
-cask "docker-desktop"
 cask "discord"
 cask "anki"
 cask "visual-studio-code"
