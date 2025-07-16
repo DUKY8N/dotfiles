@@ -42,7 +42,7 @@ brew "docker"
 brew "docker-compose"
 brew "colima" # Docker Desktop 대체
 brew "zoxide"
-
+brew "thefuck"
 
 cask "ghostty"
 cask "raycast"
