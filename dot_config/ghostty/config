@@ -5,7 +5,7 @@ font-family = "D2CodingLigature Nerd Font Mono"
 font-size = 16
 window-padding-balance = true
 macos-titlebar-proxy-icon = hidden
-macos-titlebar-style = tabs
+macos-titlebar-style = hidden
 
 # behavior
 mouse-hide-while-typing = true
