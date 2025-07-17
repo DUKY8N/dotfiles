@@ -43,6 +43,7 @@ brew "docker-compose"
 brew "colima" # Docker Desktop 대체
 brew "zoxide"
 brew "thefuck"
+brew "claude"
 
 cask "ghostty"
 cask "raycast"
