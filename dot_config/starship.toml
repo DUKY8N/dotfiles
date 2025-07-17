@@ -1,6 +1,9 @@
 continuation_prompt = "[  ](dimmed white)"
 command_timeout = 3000
 
+[hostname]
+ssh_only = false
+
 [character]
 success_symbol = "[ ](bold green)"
 error_symbol = "[ ](bold red)"
