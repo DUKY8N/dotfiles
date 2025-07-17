@@ -44,3 +44,6 @@ eval "$(mise completion zsh)"
 # zoxide
 eval "$(zoxide init zsh)"
 alias cd='z'
+
+# starship
+eval "$(starship init zsh)"
