@@ -43,7 +43,6 @@ brew "docker-compose"
 brew "colima" # Docker Desktop 대체
 brew "zoxide"
 brew "thefuck"
-brew "claude"
 brew "starship"
 
 cask "ghostty"
@@ -70,6 +69,7 @@ cask "iina"
 cask "ridibooks"
 cask "signal"
 cask "stats"
+cask "claude"
 
 cask "font-iosevka-nerd-font"
 cask "font-d2coding-nerd-font"
