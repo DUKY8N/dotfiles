@@ -7,3 +7,8 @@ ssh_only = false
 [character]
 success_symbol = "[ ](bold green)"
 error_symbol = "[ ](bold red)"
+
+[jobs]
+symbol = "󰊠 "
+style = "dimmed white"
+number_threshold = 1
