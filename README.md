@@ -12,12 +12,15 @@
 
 # dotfiles
 
-A personal dotfiles setup for macOS, managed with chezmoi and optimized for a modern terminal environment.
-Support for Linux and Windows is planned.
+A cross-platform dotfiles setup managed with chezmoi and optimized for a modern terminal environment.</br>
+Supports macOS and Windows (via WSL) with seamless configuration across different systems.</br>
 
 Can be set up from a clean system with no prior installations.
 
 ## 🛠 Setup Guide
+<details>
+<summary>MacOS 🍎</summary>
+</br>
 
 1. Prevent system sleep during setup
 
@@ -42,3 +45,34 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply DUKY8N
 ```bash
 killall caffeinate
 ```
+
+</br>
+</details>
+
+<details>
+<summary>Windows 🪟</summary>
+</br>
+
+1. Enable Windows Subsystem for Linux (WSL) and restart your computer
+
+```powershell
+Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux -All
+```
+
+2. Install WSL and Ubuntu distribution
+
+```powershell
+wsl --install -d Ubuntu
+```
+
+3. Still under construction 🚧
+
+</br>
+</details>
+
+<details>
+<summary>Linux 🐧</summary>
+</br>
+Still under construction 🚧
+</br>
+</details>
