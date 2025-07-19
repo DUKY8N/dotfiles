@@ -7,7 +7,8 @@
 </p>
 <p align="center">
   <img src="https://badgen.net/badge/dotfiles/chezmoi/green" alt="chezmoi badge" />
-  <img src="https://img.shields.io/badge/OS-macOS-lightgrey?logo=apple&logoColor=white" alt="macOS badge" />
+  <img src="https://img.shields.io/badge/OS-macOS-lightgrey?&logoColor=white" alt="macOS badge" />
+  <img src="https://img.shields.io/badge/OS-Windows-blue?&logoColor=white" alt="Windows badge" />
 </p>
 
 # dotfiles
