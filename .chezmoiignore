@@ -1,3 +1,14 @@
 {{- if ne .chezmoi.os "windows" }}
-readonIy_Documents
+readonly_Documents
+{{- end }}
+
+{{- if ne .chezmoi.os "darwin" }}
+brewfile
+dot_hammerspoon
+{{- end }}
+
+{{- if eq .chezmoi.os "windows" }}
+dot_zprofile
+dot_zshrc
+dot_zshenv
 {{- end }}
