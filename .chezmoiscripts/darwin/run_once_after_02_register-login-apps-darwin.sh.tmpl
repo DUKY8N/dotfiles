@@ -1,3 +1,4 @@
+{{- if eq .chezmoi.os "darwin" -}}
 #!/bin/bash
 apps=(
   "raycast"
@@ -35,3 +36,4 @@ done
 
 # Window drag enabled: cmd + ctrl + click anywhere on window
 defaults write -g NSWindowShouldDragOnGesture -bool true
+{{- end -}}

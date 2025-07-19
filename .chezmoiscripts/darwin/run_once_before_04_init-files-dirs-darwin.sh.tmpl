@@ -1,3 +1,4 @@
+{{- if eq .chezmoi.os "darwin" -}}
 #!/bin/bash
 
 # terminal remove ttys 
@@ -8,3 +9,4 @@ mkdir -p ~/LocalDocs
 
 # make development directory
 mkdir -p ~/Development
+{{- end -}}

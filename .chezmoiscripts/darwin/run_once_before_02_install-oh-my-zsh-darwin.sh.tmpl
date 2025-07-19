@@ -1,3 +1,4 @@
+{{- if eq .chezmoi.os "darwin" -}}
 #!/bin/bash
 
 # Oh-My-Zsh
@@ -8,3 +9,4 @@ if [ ! -d "$HOME/.oh-my-zsh" ]; then
 else
   printf "\nOh-My-Zsh found. Continuing...\n"
 fi
+{{- end -}}

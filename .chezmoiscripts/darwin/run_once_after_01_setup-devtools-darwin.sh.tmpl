@@ -1,3 +1,4 @@
+{{- if eq .chezmoi.os "darwin" -}}
 #!/bin/bash
 set -euo pipefail
 
@@ -6,3 +7,4 @@ swiftly init --assume-yes --no-modify-profile --verbose
 
 # Install remaining languages via mise
 mise install
+{{- end -}}
