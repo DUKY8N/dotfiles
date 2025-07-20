@@ -1,3 +1,10 @@
 {{ if eq .chezmoi.os "windows" -}}
-reg import "{{ .chezmoi.sourceDir }}\.assets\windows-registry\shift-space-ime.reg"
+if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
+    Write-Host "Administrator privileges required. Requesting elevation..."
+
+    $scriptPath = "{{ .chezmoi.sourceDir }}\.assets\windows-registry\shift-space-ime.reg"
+    Start-Process "reg" -ArgumentList "import", "`"$scriptPath`"" -Verb RunAs -Wait
+} else {
+    reg import "{{ .chezmoi.sourceDir }}\.assets\windows-registry\shift-space-ime.reg"
+}
 {{- end }}
