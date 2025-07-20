@@ -1,0 +1,3 @@
+{{ if eq .chezmoi.os "windows" -}}
+reg import "{{ .chezmoi.sourceDir }}\.chezmoiscripts\windows\shift-space-ime.reg"
+{{- end }}

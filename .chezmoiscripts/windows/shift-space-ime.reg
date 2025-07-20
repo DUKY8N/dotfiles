@@ -1,0 +1,7 @@
+Windows Registry Editor Version 5.00
+
+[HKEY_LOCAL_MACHINE\SYSTEM\CurrentControlSet\Services\i8042prt\Parameters]
+"LayerDriver KOR"="kbd101c.dll"
+"OverrideKeyboardType"=dword:00000008
+"OverrideKeyboardSubtype"=dword:00000005
+"OverrideKeyboardIdentifier"="PCAT_101CKEY"
