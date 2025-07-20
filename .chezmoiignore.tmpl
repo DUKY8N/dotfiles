@@ -17,4 +17,5 @@ brewfile
 {{ if ne .chezmoi.os "windows" -}}
 # Windows specific files - ignore on non-Windows systems
 wingetfile.json
+AppData
 {{- end }}
