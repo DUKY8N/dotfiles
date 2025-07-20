@@ -1,0 +1,58 @@
+{
+	"$schema": "https://aka.ms/winget-packages.schema.2.0.json",
+	"Sources": [
+		{
+			"Packages": [
+				{ "PackageIdentifier": "Microsoft.AppInstaller" },
+				{ "PackageIdentifier": "Microsoft.VCRedist.2015+.x64" },
+				{ "PackageIdentifier": "Microsoft.UI.Xaml.2.8" },
+				{ "PackageIdentifier": "Microsoft.VCLibs.Desktop.14" },
+				{ "PackageIdentifier": "Microsoft.PowerShell" },
+				{ "PackageIdentifier": "Microsoft.PowerToys" },
+				{ "PackageIdentifier": "Microsoft.VisualStudioCode" },
+				{ "PackageIdentifier": "Microsoft.WindowsTerminal" },
+				{ "PackageIdentifier": "twpayne.chezmoi" },
+				{ "PackageIdentifier": "7zip.7zip" },
+				{ "PackageIdentifier": "Bandisoft.BandiView" },
+				{ "PackageIdentifier": "Bandisoft.Bandizip" },
+				{ "PackageIdentifier": "Git.Git" },
+				{ "PackageIdentifier": "ImageMagick.ImageMagick" },
+				{ "PackageIdentifier": "SMPlayer.SMPlayer" },
+				{ "PackageIdentifier": "Zen-Team.Zen-Browser" },
+				{ "PackageIdentifier": "Neovim.Neovim" },
+				{ "PackageIdentifier": "OpenJS.NodeJS" },
+				{ "PackageIdentifier": "DEVCOM.JetBrainsMonoNerdFont" },
+				{ "PackageIdentifier": "Anthropic.Claude" },
+				{ "PackageIdentifier": "AutoHotkey.AutoHotkey" },
+				{ "PackageIdentifier": "BurntSushi.ripgrep.MSVC" },
+				{ "PackageIdentifier": "Gyan.FFmpeg" },
+				{ "PackageIdentifier": "JesseDuffield.lazygit" },
+				{ "PackageIdentifier": "ajeetdsouza.zoxide" },
+				{ "PackageIdentifier": "DeepL.DeepL" },
+				{ "PackageIdentifier": "jqlang.jq" },
+				{ "PackageIdentifier": "junegunn.fzf" },
+				{ "PackageIdentifier": "oschwartz10612.Poppler" },
+				{ "PackageIdentifier": "sharkdp.fd" },
+				{ "PackageIdentifier": "sxyazi.yazi" },
+				{ "PackageIdentifier": "File-New-Project.EarTrumpet" }
+			],
+			"SourceDetails": {
+				"Argument": "https://cdn.winget.microsoft.com/cache",
+				"Identifier": "Microsoft.Winget.Source_8wekyb3d8bbwe",
+				"Name": "winget",
+				"Type": "Microsoft.PreIndexed.Package"
+			}
+		},
+		{
+			"Packages": [
+				{ "PackageIdentifier": "9NT1R1C2HH7J" }
+			],
+			"SourceDetails": {
+				"Argument": "https://storeedgefd.dsx.mp.microsoft.com/v9.0",
+				"Identifier": "StoreEdgeFD",
+				"Name": "msstore",
+				"Type": "Microsoft.Rest"
+			}
+		}
+	]
+}

@@ -13,3 +13,8 @@ README.md
 .hammerspoon/
 brewfile
 {{- end }}
+
+{{ if ne .chezmoi.os "windows" -}}
+# Windows specific files - ignore on non-Windows systems
+packages.json
+{{- end }}
