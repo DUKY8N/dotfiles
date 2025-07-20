@@ -44,6 +44,7 @@ brew "colima" # Docker Desktop 대체
 brew "zoxide"
 brew "thefuck"
 brew "starship"
+brew "gource"
 
 cask "ghostty"
 cask "raycast"
@@ -68,7 +69,6 @@ cask "gureumkim"
 cask "iina"
 cask "ridibooks"
 cask "signal"
-cask "stats"
 cask "claude"
 
 cask "font-iosevka-nerd-font"
@@ -81,7 +81,6 @@ mas "BandiNamer", id: 6451223045
 mas "Bandizip", id: 1265704574
 mas "ExcalidrawZ", id: 6636493997
 mas "Flow", id: 1423210932
-mas "Gestimer", id: 6447125648
 mas "GitGrass", id: 1501139279
 mas "Gifski", id: 1351639930
 mas "HazeOver", id: 430798174
