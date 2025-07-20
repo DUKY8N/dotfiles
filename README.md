@@ -54,19 +54,47 @@ killall caffeinate
 <summary>Windows 🪟</summary>
 </br>
 
-1. Enable Windows Subsystem for Linux (WSL) and restart your computer
+1. Install and setup dotfiles with Chezmoi
+
+```
+winget install twpayne.chezmoi
+chezmoi init --apply DUKY8N
+```
+
+2. Enable Windows Subsystem for Linux (WSL) and **restart** your computer
 
 ```powershell
 Enable-WindowsOptionalFeature -Online -FeatureName Microsoft-Windows-Subsystem-Linux -All
 ```
 
-2. Install WSL and Ubuntu distribution
+3. Install Arch Linux on WSL
 
 ```powershell
-wsl --install -d Ubuntu
+wsl --install -d archlinux
 ```
 
-3. Still under construction 🚧
+4. Create a new user account and set password (inside Arch Linux)
+
+```bash
+# CUSTOMIZE: Change **username** to whatever you want
+useradd -m -G wheel username
+passwd username
+```
+
+5. Configure sudo permissions and install packages
+
+```bash
+mkdir -p /etc/sudoers.d
+echo "%wheel ALL=(ALL) ALL" > /etc/sudoers.d/wheel
+pacman -Syu sudo
+```
+
+6. Set WSL default user (back in PowerShell)
+
+```powershell
+# MATCH PREVIOUS: Use the same **username** from step 4
+wsl --manage archlinux --set-default-user username
+```
 
 </br>
 </details>
