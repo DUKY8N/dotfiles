@@ -1,0 +1,13 @@
+{{- if eq .chezmoi.os "windows" }}
+# Unix-like files - ignore on Windows
+.zprofile
+.zshenv
+.zshrc
+.config/
+{{- end }}
+
+{{- if ne .chezmoi.os "darwin" }}
+# macOS specific files - ignore on non-macOS systems
+.hammerspoon/
+brewfile
+{{- end }}
