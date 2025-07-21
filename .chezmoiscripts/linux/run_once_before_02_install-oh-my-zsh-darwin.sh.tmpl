@@ -1,0 +1,12 @@
+{{ if eq .chezmoi.os "linux" -}}
+#!/usr/bin/env bash
+
+# Oh-My-Zsh
+if [ ! -d "$HOME/.oh-my-zsh" ]; then
+  printf "\nOh-My-Zsh not found. Installing Oh-My-Zsh...\n"
+  RUNZSH=no CHSH=no \
+    sh -c "$(curl -fsSL https://raw.githubusercontent.com/ohmyzsh/ohmyzsh/master/tools/install.sh)"
+else
+  printf "\nOh-My-Zsh found. Continuing...\n"
+fi
+{{- end }}
