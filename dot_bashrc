@@ -1,5 +1,0 @@
-# If not running interactively, don't do anything
-[[ $- != *i* ]] && return
-
-# If current shell is not zsh, and zsh is installed, switch to zsh
-[ "$SHELL" != "/bin/zsh" ] && command -v zsh >/dev/null && chsh -s /bin/zsh
