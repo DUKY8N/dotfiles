@@ -34,9 +34,6 @@ alias fxkr="convmv -r -f utf8 -t utf8 --nfc --notest"
 export EDITOR="nvim"
 alias vim="nvim"
 
-# load swiftly environment
-. "$HOME/.swiftly/env.sh"
-
 # mise
 eval "$(mise activate zsh)"
 eval "$(mise completion zsh)"
