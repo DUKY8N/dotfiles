@@ -1,5 +1,6 @@
-
+{{ if eq .chezmoi.os "darwin" -}}
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
 # load swiftly environment
 . "/Users/duky8n/.swiftly/env.sh"
+{{- end }}
