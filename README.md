@@ -29,19 +29,19 @@ Can be set up from a clean system with no prior installations.
 caffeinate -dimsu &
 ```
 
-2. Install command line tools
+2. Install Xcode Command Line Tools
 
 ```bash
 xcode-select --install
 ```
 
-3. Install chezmoi
+3. Install and setup dotfiles with Chezmoi
 
 ```bash
 sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply DUKY8N
 ```
 
-4. Stop sleep prevention
+4. Stop sleep prevention process
 
 ```bash
 killall caffeinate
@@ -96,12 +96,24 @@ pacman -Syu sudo
 wsl --manage archlinux --set-default-user username
 ```
 
+7. Install and setup dotfiles with Chezmoi (inside Arch Linux)
+
+```bash
+sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply DUKY8N
+```
+
 </br>
 </details>
 
 <details>
 <summary>Linux 🐧</summary>
 </br>
-Still under construction 🚧
+
+1. Install and setup dotfiles with Chezmoi
+
+```bash
+sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply DUKY8N
+```
+
 </br>
 </details>
