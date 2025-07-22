@@ -51,6 +51,6 @@ alias pli="brew bundle --file={{ .chezmoi.sourceDir }}/.brewfile"
 alias ple="nvim {{ .chezmoi.sourceDir }}/.brewfile"
 {{- end }}
 {{ if eq .chezmoi.os "linux" -}}
-alias pli="sudo pacman -S --needed - < {{ .chezmoi.sourceDir }}/.pacmanfile"
+alias pli="sudo pacman -Syu --needed - < {{ .chezmoi.sourceDir }}/.pacmanfile"
 alias ple="nvim {{ .chezmoi.sourceDir }}/.pacmanfile"
 {{- end }}

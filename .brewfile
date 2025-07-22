@@ -1,50 +1,51 @@
-brew "neovim"
-brew "eza"
-brew "yazi"
-brew "tmux"
-brew "lazygit"
-brew "lazydocker"
-brew "lazysql"
-brew "chezmoi"
-brew "bat"
-brew "fd" # find 개선 도구
-brew "fzf"
-brew "git"
-brew "git-delta"
-brew "gh"
-brew "btop"
 brew "mas"
-brew "yt-dlp"
-brew "ffmpeg"
-brew "helix"
-brew "fastfetch"
-brew "mpv"
-brew "pandoc" # 문서 포맷 변환기
-brew "poppler"
-brew "resvg" # SVG 렌더링 도구 (yazi에서 사용)
-brew "rust"
-brew "rust-analyzer"
-brew "sevenzip" # 압축 도구 (yazi에서 사용)
-brew "swiftly"
-brew "tlrc"
+
 brew "asciinema" # 터미널 세션을 녹화/공유하는 도구
-brew "ripgrep" # grep 개선 도구
-brew "sd" # sed 개선 도구
-brew "dust" # du 개선 도구 # 디스크 사용량을 시각화하는 도구
-brew "posting"
-brew "diskonaut" # 디스크 사용량을 시각화하는 도구
-brew "mise"
+brew "bat"
+brew "btop"
+brew "chezmoi"
+brew "colima" # Docker Desktop 대체
 brew "convmv" # 파일명 인코딩 변환기
-brew "termshark"
-brew "vivid" # LS_COLORS 테마 적용 도구
-brew "uv"
+brew "diskonaut" # 디스크 사용량을 시각화하는 도구
 brew "docker"
 brew "docker-compose"
-brew "colima" # Docker Desktop 대체
-brew "zoxide"
-brew "thefuck"
-brew "starship"
+brew "dust" # du 개선 도구 # 디스크 사용량을 시각화하는 도구
+brew "eza"
+brew "fastfetch"
+brew "fd" # find 개선 도구
+brew "ffmpeg"
+brew "fzf"
+brew "gh"
+brew "git"
+brew "git-delta"
 brew "gource"
+brew "helix"
+brew "lazydocker"
+brew "lazygit"
+brew "lazysql"
+brew "mise"
+brew "mpv"
+brew "neovim"
+brew "pandoc" # 문서 포맷 변환기
+brew "poppler"
+brew "posting"
+brew "resvg" # SVG 렌더링 도구 (yazi에서 사용)
+brew "ripgrep" # grep 개선 도구
+brew "rust"
+brew "rust-analyzer"
+brew "sd" # sed 개선 도구
+brew "sevenzip" # 압축 도구 (yazi에서 사용)
+brew "starship"
+brew "swiftly"
+brew "termshark"
+brew "thefuck"
+brew "tlrc"
+brew "tmux"
+brew "uv"
+brew "vivid" # LS_COLORS 테마 적용 도구
+brew "yazi"
+brew "yt-dlp"
+brew "zoxide"
 
 cask "ghostty"
 cask "raycast"
