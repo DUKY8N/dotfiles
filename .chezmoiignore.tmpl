@@ -11,11 +11,10 @@ README.md
 {{ if ne .chezmoi.os "darwin" -}}
 # macOS specific files - ignore on non-macOS systems
 .hammerspoon/
-brewfile
 {{- end }}
 
 {{ if ne .chezmoi.os "windows" -}}
 # Windows specific files - ignore on non-Windows systems
-wingetfile.json
-AppData
+AppData/
+Documents/
 {{- end }}
