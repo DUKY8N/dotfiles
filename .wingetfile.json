@@ -34,6 +34,7 @@
 				{ "PackageIdentifier": "oschwartz10612.Poppler" },
 				{ "PackageIdentifier": "sharkdp.fd" },
 				{ "PackageIdentifier": "sxyazi.yazi" },
+				{ "PackageIdentifier": "Fastfetch-cli.Fastfetch" },
 				{ "PackageIdentifier": "File-New-Project.EarTrumpet" }
 			],
 			"SourceDetails": {
