@@ -30,6 +30,7 @@
         { "PackageIdentifier": "SMPlayer.SMPlayer" },
         { "PackageIdentifier": "Zen-Team.Zen-Browser" },
         { "PackageIdentifier": "ajeetdsouza.zoxide" },
+        { "PackageIdentifier": "dandavison.delta" },
         { "PackageIdentifier": "jqlang.jq" },
         { "PackageIdentifier": "junegunn.fzf" },
         { "PackageIdentifier": "oschwartz10612.Poppler" },
