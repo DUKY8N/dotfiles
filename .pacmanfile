@@ -10,6 +10,7 @@ diskonaut
 docker
 docker-compose
 dust
+entr
 eza
 fastfetch
 fd
@@ -17,6 +18,7 @@ ffmpeg
 fzf
 git-delta
 github-cli
+jq
 lazygit
 mise
 mpv
