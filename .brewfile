@@ -48,6 +48,12 @@ brew "vivid" # LS_COLORS 테마 적용 도구
 brew "yazi"
 brew "yt-dlp"
 brew "zoxide"
+brew "neomutt"
+brew "isync" # (neomutt에서 사용)
+brew "msmtp" # (neomutt에서 사용)
+brew "pass" # 암호
+brew "ca-certificates" # (neomutt에서 사용)
+brew "gettext" # (neomutt에서 사용)
 
 cask "adguard"
 cask "adobe-digital-editions"
