@@ -18,22 +18,9 @@ export LS_COLORS="$(vivid generate catppuccin-mocha)"
 
 # eza
 export EZA_CONFIG_DIR="$HOME/.config/eza"
-alias ls='LS_COLORS= eza --group-directories-first --icons'
-alias l='ls --long --git --color-scale=all --time-style=relative'
-alias la='l --all'
-alias ll='l --octal-permissions --group --header --time-style=long-iso'
-alias lla='ll --all'
-alias lt='ls --tree --level=2'
-
-# tldr alias
-alias tldr='LANG=ko tldr'
-
-# fix nfd to ndc alias
-alias fxkr="convmv -r -f utf8 -t utf8 --nfc --notest"
 
 # nvim
 export EDITOR="nvim"
-alias vim="nvim"
 
 # mise
 eval "$(mise activate zsh)"
@@ -41,17 +28,9 @@ eval "$(mise completion zsh)"
 
 # zoxide
 eval "$(zoxide init zsh)"
-alias cd='z'
 
 # starship
 eval "$(starship init zsh)"
 
-# package management alias
-{{ if eq .chezmoi.os "darwin" -}}
-alias pli="brew bundle --file={{ .chezmoi.sourceDir }}/.brewfile"
-alias ple="nvim {{ .chezmoi.sourceDir }}/.brewfile"
-{{- end }}
-{{ if eq .chezmoi.os "linux" -}}
-alias pli="sudo pacman -Syu --needed - < {{ .chezmoi.sourceDir }}/.pacmanfile"
-alias ple="nvim {{ .chezmoi.sourceDir }}/.pacmanfile"
-{{- end }}
+# load aliases
+[ -f ~/.zsh_aliases ] && . ~/.zsh_aliases
