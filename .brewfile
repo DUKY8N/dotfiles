@@ -55,6 +55,7 @@ brew "pass" # 암호
 brew "ca-certificates" # (neomutt에서 사용)
 brew "gettext" # (neomutt에서 사용)
 
+cask "antinote"
 cask "adguard"
 cask "adobe-digital-editions"
 cask "anki"
@@ -74,6 +75,7 @@ cask "jordanbaird-ice"
 cask "mac-mouse-fix"
 cask "mission-control-plus"
 cask "obsidian"
+cask "ollama-app"
 cask "raycast"
 cask "ridibooks"
 cask "runjs"
