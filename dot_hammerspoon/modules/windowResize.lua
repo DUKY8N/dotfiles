@@ -220,6 +220,19 @@ local function minimizeToSmallest()
 	end)
 end
 
+local function centerWindow()
+	withFocusedWindow(function(win)
+		local frame = win:frame()
+		local screen = win:screen():frame()
+
+		-- 크기는 유지하고 위치만 중앙으로
+		frame.x = screen.x + (screen.w - frame.w) / 2
+		frame.y = screen.y + (screen.h - frame.h) / 2
+
+		win:setFrame(frame, config.animationDuration)
+	end)
+end
+
 --------------------------
 -- Key Bindings
 --------------------------
@@ -282,3 +295,6 @@ hs.hotkey.bind(config.mod, "-", decreaseSize, nil, decreaseSize)
 -- 특수 크기
 hs.hotkey.bind(config.mod, "return", maximizeWindow)
 hs.hotkey.bind(config.mod, "0", minimizeToSmallest)
+
+-- 위치만 중앙 정렬 (크기 유지)
+hs.hotkey.bind(config.mod, "space", centerWindow)
