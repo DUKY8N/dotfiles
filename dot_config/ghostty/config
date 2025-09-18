@@ -1,5 +1,5 @@
 # appearance
-theme = catppuccin-mocha
+theme = "Catppuccin Mocha"
 font-family = "Iosevka Nerd Font Propo"
 font-family = "D2CodingLigature Nerd Font Mono"
 font-size = 16
