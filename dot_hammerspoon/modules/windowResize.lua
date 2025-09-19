@@ -7,21 +7,13 @@ local config = {
 	mod = { "ctrl", "alt" },
 	shiftMod = { "shift", "ctrl", "alt" },
 	animationDuration = 0.125,
-	moveStep = 150, -- 픽셀 단위 이동 거리
+	moveStep = 100, -- 픽셀 단위 이동 거리
 	resizeStep = 50, -- 픽셀 단위 크기 조절
-	minWidth = 200, -- 최소 너비
-	minHeight = 150, -- 최소 높이
 	resizeFactors = {
 		increase = 1.1, -- 10% 증가
 		decrease = 0.9, -- 10% 감소
 	},
-	cycleTimeout = 1000, -- 사이클링 타임아웃 (밀리초)
-}
-
--- 사이클링 상태
-local cycleState = {
-	left = { index = 1, lastTime = 0 },
-	right = { index = 1, lastTime = 0 },
+	tolerance = 0.01, -- 통합 허용 오차 (1%) - 상태 감지 및 가장자리 정렬에 사용
 }
 
 -- 사이클링 레이아웃
@@ -79,6 +71,11 @@ local resizeDirections = {
 -- Utility Functions
 --------------------------
 
+-- 두 값이 허용 오차 내에 있는지 확인하는 공통 함수
+local function isWithinTolerance(value1, value2)
+	return math.abs(value1 - value2) < config.tolerance
+end
+
 -- 포커스된 윈도우에 함수 실행
 local function withFocusedWindow(fn)
 	local win = hs.window.focusedWindow()
@@ -90,8 +87,8 @@ end
 -- 프레임을 화면 경계 내로 제한
 local function constrainFrameToScreen(frame, screen)
 	local constrained = {
-		w = math.max(config.minWidth, math.min(screen.w, frame.w)),
-		h = math.max(config.minHeight, math.min(screen.h, frame.h)),
+		w = math.min(screen.w, frame.w),
+		h = math.min(screen.h, frame.h),
 	}
 
 	-- 위치 조정 (화면 밖으로 나가지 않도록)
@@ -117,13 +114,13 @@ local function moveWindow(x, y, w, h)
 		}
 
 		-- 오른쪽 정렬 감지 및 수정 (x + w가 거의 1.0인 경우)
-		if math.abs((x + w) - 1.0) < 0.01 then
+		if isWithinTolerance(x + w, 1.0) then
 			-- 너비를 화면 끝까지 확장
 			newFrame.w = screen.w - (newFrame.x - screen.x)
 		end
 
 		-- 아래쪽 정렬 감지 및 수정 (y + h가 거의 1.0인 경우)
-		if math.abs((y + h) - 1.0) < 0.01 then
+		if isWithinTolerance(y + h, 1.0) then
 			-- 높이를 화면 끝까지 확장
 			newFrame.h = screen.h - (newFrame.y - screen.y)
 		end
@@ -132,23 +129,49 @@ local function moveWindow(x, y, w, h)
 	end)
 end
 
-local function cycleWindowSize(direction)
-	local currentTime = hs.timer.secondsSinceEpoch() * 1000
-	local state = cycleState[direction]
+-- 창의 현재 상태를 감지하는 함수
+local function detectWindowState(win, direction)
+	local frame = win:frame()
+	local screen = win:screen():frame()
 
-	-- 타임아웃 체크 (1초 이상 지났으면 리셋)
-	if currentTime - state.lastTime > config.cycleTimeout then
-		state.index = 1
-	else
-		-- 다음 사이즈로 이동
-		state.index = (state.index % #cycleLayouts[direction]) + 1
+	-- 현재 창의 상대적 위치와 크기 계산
+	local relX = (frame.x - screen.x) / screen.w
+	local relW = frame.w / screen.w
+
+	-- 각 레이아웃과 비교하여 현재 상태 찾기
+	local layouts = cycleLayouts[direction]
+	for i, layout in ipairs(layouts) do
+		local layoutX = layout[1]
+		local layoutW = layout[3]
+
+		-- 위치와 너비가 모두 허용 오차 내에 있는지 확인
+		if isWithinTolerance(relX, layoutX) and isWithinTolerance(relW, layoutW) then
+			return i
+		end
 	end
 
-	state.lastTime = currentTime
+	-- 매칭되는 상태가 없으면 nil 반환
+	return nil
+end
 
-	-- 레이아웃 적용
-	local layout = cycleLayouts[direction][state.index]
-	moveWindow(layout[1], layout[2], layout[3], layout[4])
+local function cycleWindowSize(direction)
+	withFocusedWindow(function(win)
+		-- 현재 창 상태 감지
+		local currentIndex = detectWindowState(win, direction)
+		local nextIndex
+
+		if currentIndex then
+			-- 다음 인덱스로 순환
+			nextIndex = (currentIndex % #cycleLayouts[direction]) + 1
+		else
+			-- 현재 상태를 감지할 수 없으면 첫 번째 레이아웃으로
+			nextIndex = 1
+		end
+
+		-- 레이아웃 적용
+		local layout = cycleLayouts[direction][nextIndex]
+		moveWindow(layout[1], layout[2], layout[3], layout[4])
+	end)
 end
 
 -- 이동 관련
@@ -220,7 +243,7 @@ local function maximizeWindow()
 	end)
 end
 
-local function minimizeToSmallest()
+local function minimizeWindow()
 	withFocusedWindow(function(win)
 		local screen = win:screen():frame()
 		local frame = {
@@ -255,7 +278,6 @@ end
 hs.hotkey.bind(config.mod, "h", function()
 	cycleWindowSize("left")
 end)
-
 hs.hotkey.bind(config.mod, "l", function()
 	cycleWindowSize("right")
 end)
@@ -280,7 +302,6 @@ end
 hs.hotkey.bind(config.mod, "[", function()
 	moveToScreen("previous")
 end)
-
 hs.hotkey.bind(config.mod, "]", function()
 	moveToScreen("next")
 end)
@@ -295,19 +316,32 @@ for key, direction in pairs(resizeDirections) do
 end
 
 -- 퍼센트 크기 조절
-local increaseSize = function()
-	resizeByPercent(config.resizeFactors.increase)
-end
-local decreaseSize = function()
-	resizeByPercent(config.resizeFactors.decrease)
-end
-
-hs.hotkey.bind(config.mod, "=", increaseSize, nil, increaseSize)
-hs.hotkey.bind(config.mod, "-", decreaseSize, nil, decreaseSize)
+hs.hotkey.bind(
+	config.mod,
+	"=",
+	function()
+		resizeByPercent(config.resizeFactors.increase)
+	end,
+	nil,
+	function()
+		resizeByPercent(config.resizeFactors.increase)
+	end
+)
+hs.hotkey.bind(
+	config.mod,
+	"-",
+	function()
+		resizeByPercent(config.resizeFactors.decrease)
+	end,
+	nil,
+	function()
+		resizeByPercent(config.resizeFactors.decrease)
+	end
+)
 
 -- 특수 크기
 hs.hotkey.bind(config.mod, "return", maximizeWindow)
-hs.hotkey.bind(config.mod, "0", minimizeToSmallest)
+hs.hotkey.bind(config.mod, "0", minimizeWindow)
 
 -- 위치만 중앙 정렬 (크기 유지)
 hs.hotkey.bind(config.mod, "space", centerWindow)
