@@ -110,11 +110,24 @@ local function moveWindow(x, y, w, h)
 	withFocusedWindow(function(win)
 		local screen = win:screen():frame()
 		local newFrame = {
-			x = screen.x + (screen.w * x),
-			y = screen.y + (screen.h * y),
-			w = screen.w * w,
-			h = screen.h * h,
+			x = screen.x + math.floor(screen.w * x),
+			y = screen.y + math.floor(screen.h * y),
+			w = math.floor(screen.w * w),
+			h = math.floor(screen.h * h),
 		}
+
+		-- 오른쪽 정렬 감지 및 수정 (x + w가 거의 1.0인 경우)
+		if math.abs((x + w) - 1.0) < 0.01 then
+			-- 너비를 화면 끝까지 확장
+			newFrame.w = screen.w - (newFrame.x - screen.x)
+		end
+
+		-- 아래쪽 정렬 감지 및 수정 (y + h가 거의 1.0인 경우)
+		if math.abs((y + h) - 1.0) < 0.01 then
+			-- 높이를 화면 끝까지 확장
+			newFrame.h = screen.h - (newFrame.y - screen.y)
+		end
+
 		win:setFrame(newFrame, config.animationDuration)
 	end)
 end
