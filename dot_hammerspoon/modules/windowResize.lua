@@ -3,7 +3,7 @@
 --------------------------
 local config = {
 	mod = { "ctrl", "alt" },
-	shiftMod = { "shift", "ctrl", "alt" },
+	resizeMod = { "shift", "ctrl", "alt" }, -- 크기 조절용 수식 키
 	animationDuration = 0.125,
 	moveStep = 100, -- 픽셀 단위 이동 거리
 	resizeStep = 50, -- 픽셀 단위 크기 조절
@@ -15,7 +15,7 @@ local config = {
 	cycleTimeout = 0.5, -- 빠른 재클릭 감지 시간 (초)
 }
 
-local lastCycle = nil -- {direction, time, index}
+local lastCycle = { time = 0 } -- {direction, time, index}
 local cycleLayouts = {
 	left = {
 		{ 0, 0, 0.5, 1 }, -- 1/2
@@ -50,18 +50,20 @@ local layouts = {
 	["delete"] = { 0.2, 0.2, 0.6, 0.6 }, -- 60% 크기
 }
 
-local directions = {
-	left = { -1, 0 },
-	right = { 1, 0 },
-	up = { 0, -1 },
-	down = { 0, 1 },
+-- 창 이동 방향
+local moveDirections = {
+	left = { dx = -1, dy = 0 },
+	right = { dx = 1, dy = 0 },
+	up = { dx = 0, dy = -1 },
+	down = { dx = 0, dy = 1 },
 }
 
+-- 창 크기 조절 방향 (중심점 기준)
 local resizeDirections = {
-	left = { -1, 0 }, -- 너비 감소
-	right = { 1, 0 }, -- 너비 증가
-	up = { 0, 1 }, -- 높이 증가
-	down = { 0, -1 }, -- 높이 감소
+	left = { dw = -1, dh = 0 }, -- 너비 감소
+	right = { dw = 1, dh = 0 }, -- 너비 증가
+	up = { dw = 0, dh = 1 }, -- 높이 증가
+	down = { dw = 0, dh = -1 }, -- 높이 감소
 }
 
 --------------------------
@@ -79,94 +81,89 @@ local function withFocusedWindow(fn)
 	end
 end
 
+-- 반복 키 바인딩을 위한 헬퍼 함수
+local function bindRepeatKey(mod, key, fn)
+	hs.hotkey.bind(mod, key, fn, nil, fn)
+end
+
 local function constrainFrameToScreen(frame, screen)
-	local constrained = {
-		w = math.min(screen.w, frame.w),
-		h = math.min(screen.h, frame.h),
+	local w = math.min(screen.w, frame.w)
+	local h = math.min(screen.h, frame.h)
+	return {
+		w = w,
+		h = h,
+		x = math.max(screen.x, math.min(screen.x + screen.w - w, frame.x)),
+		y = math.max(screen.y, math.min(screen.y + screen.h - h, frame.y)),
 	}
-
-	constrained.x = math.max(screen.x, math.min(screen.x + screen.w - constrained.w, frame.x))
-	constrained.y = math.max(screen.y, math.min(screen.y + screen.h - constrained.h, frame.y))
-
-	return constrained
 end
 
 --------------------------
 -- Core Functions
 --------------------------
 
-local function moveWindow(x, y, w, h)
-	withFocusedWindow(function(win)
-		local screen = win:screen():frame()
-		local newFrame = {
-			x = screen.x + math.floor(screen.w * x),
-			y = screen.y + math.floor(screen.h * y),
-			w = math.floor(screen.w * w),
-			h = math.floor(screen.h * h),
-		}
+-- 프레임 계산을 위한 헬퍼 함수
+local function calculateFrame(screen, x, y, w, h)
+	local frame = {
+		x = screen.x + math.floor(screen.w * x),
+		y = screen.y + math.floor(screen.h * y),
+		w = math.floor(screen.w * w),
+		h = math.floor(screen.h * h),
+	}
 
-		-- 가장자리 픽셀 보정: 0.99 이상을 1.0으로 처리
-		if isWithinTolerance(x + w, 1.0) then
-			newFrame.w = screen.w - (newFrame.x - screen.x)
-		end
-
-		if isWithinTolerance(y + h, 1.0) then
-			newFrame.h = screen.h - (newFrame.y - screen.y)
-		end
-
-		win:setFrame(newFrame, config.animationDuration)
-	end)
-end
-
-local function detectWindowState(win, direction)
-	local frame = win:frame()
-	local screen = win:screen():frame()
-
-	local relX = (frame.x - screen.x) / screen.w
-	local relW = frame.w / screen.w
-
-	local layouts = cycleLayouts[direction]
-	for i, layout in ipairs(layouts) do
-		local layoutX = layout[1]
-		local layoutW = layout[3]
-
-		if isWithinTolerance(relX, layoutX) and isWithinTolerance(relW, layoutW) then
-			return i
-		end
+	-- 화면 끝까지 차지해야 할 때 픽셀 완벽 정렬
+	if isWithinTolerance(x + w, 1.0) then
+		frame.w = screen.x + screen.w - frame.x
 	end
 
-	return nil
+	if isWithinTolerance(y + h, 1.0) then
+		frame.h = screen.y + screen.h - frame.y
+	end
+
+	return frame
+end
+
+local function setWindowPosition(x, y, w, h)
+	withFocusedWindow(function(win)
+		local screen = win:screen():frame()
+		local newFrame = calculateFrame(screen, x, y, w, h)
+		win:setFrame(newFrame, config.animationDuration)
+	end)
 end
 
 local function cycleWindowSize(direction)
 	withFocusedWindow(function(win)
 		local now = hs.timer.secondsSinceEpoch()
+		local layoutCount = #cycleLayouts[direction]
 		local layoutIndex
 
-		-- 빠른 재클릭 시 1→2→3 순서로 강제 진행
-		if lastCycle and lastCycle.direction == direction and (now - lastCycle.time) <= config.cycleTimeout then
-			layoutIndex = (lastCycle.index % #cycleLayouts[direction]) + 1
+		-- 빠른 재클릭: 이전 인덱스에서 계속
+		if lastCycle.direction == direction and (now - lastCycle.time) <= config.cycleTimeout then
+			layoutIndex = (lastCycle.index % layoutCount) + 1
 		else
-			-- 현재 크기 인식 후 다음으로
-			local currentIndex = detectWindowState(win, direction)
-			if currentIndex then
-				layoutIndex = (currentIndex % #cycleLayouts[direction]) + 1
-			else
-				layoutIndex = 1
+			-- 현재 창 상태 감지
+			local frame = win:frame()
+			local screen = win:screen():frame()
+			local normalizedX = (frame.x - screen.x) / screen.w
+			local normalizedWidth = frame.w / screen.w
+
+			layoutIndex = 1 -- 기본값
+			for i, layout in ipairs(cycleLayouts[direction]) do
+				if isWithinTolerance(normalizedX, layout[1]) and isWithinTolerance(normalizedWidth, layout[3]) then
+					layoutIndex = (i % layoutCount) + 1
+					break
+				end
 			end
 		end
 
-		local layout = cycleLayouts[direction][layoutIndex]
-		moveWindow(layout[1], layout[2], layout[3], layout[4])
-		lastCycle = {
-			direction = direction,
-			time = now,
-			index = layoutIndex,
-		}
+		setWindowPosition(table.unpack(cycleLayouts[direction][layoutIndex]))
+
+		lastCycle.direction = direction
+		lastCycle.time = now
+		lastCycle.index = layoutIndex
 	end)
 end
 
-local function moveByDirection(dx, dy)
+local function moveWindow(dx, dy)
 	withFocusedWindow(function(win)
 		local frame = win:frame()
 		local screen = win:screen():frame()
@@ -178,8 +175,7 @@ local function moveByDirection(dx, dy)
 			h = frame.h,
 		}
 
-		newFrame = constrainFrameToScreen(newFrame, screen)
-		win:setFrame(newFrame, config.animationDuration)
+		win:setFrame(constrainFrameToScreen(newFrame, screen), config.animationDuration)
 	end)
 end
 
@@ -190,73 +186,29 @@ local function moveToScreen(direction)
 	end)
 end
 
-local function resizeByDirection(dw, dh)
+-- 중심점 기준 크기 조절 공통 함수
+local function resizeWindowCentered(widthChange, heightChange)
 	withFocusedWindow(function(win)
 		local frame = win:frame()
 		local screen = win:screen():frame()
-
-		-- 창 중심점 유지하며 크기 조절
-		local widthChange = dw * config.resizeStep * 2
-		local heightChange = dh * config.resizeStep * 2
-
 		local newFrame = {
 			w = frame.w + widthChange,
 			h = frame.h + heightChange,
 			x = frame.x - widthChange / 2,
 			y = frame.y - heightChange / 2,
 		}
-
-		newFrame = constrainFrameToScreen(newFrame, screen)
-		win:setFrame(newFrame, config.animationDuration)
+		win:setFrame(constrainFrameToScreen(newFrame, screen), config.animationDuration)
 	end)
+end
+
+local function resizeByDirection(dw, dh)
+	resizeWindowCentered(dw * config.resizeStep * 2, dh * config.resizeStep * 2)
 end
 
 local function resizeByPercent(factor)
 	withFocusedWindow(function(win)
 		local frame = win:frame()
-		local screen = win:screen():frame()
-
-		local newFrame = {
-			w = frame.w * factor,
-			h = frame.h * factor,
-			x = frame.x - (frame.w * factor - frame.w) / 2,
-			y = frame.y - (frame.h * factor - frame.h) / 2,
-		}
-
-		newFrame = constrainFrameToScreen(newFrame, screen)
-		win:setFrame(newFrame, config.animationDuration)
-	end)
-end
-
-local function maximizeWindow()
-	withFocusedWindow(function(win)
-		win:maximize(config.animationDuration)
-	end)
-end
-
-local function minimizeWindow()
-	withFocusedWindow(function(win)
-		local screen = win:screen():frame()
-		-- 1x1 픽셀로 축소 (실제 최소화가 아닌 극단적 크기 축소)
-		local frame = {
-			w = 1,
-			h = 1,
-			x = screen.x + (screen.w - 1) / 2,
-			y = screen.y + (screen.h - 1) / 2,
-		}
-		win:setFrame(frame, config.animationDuration)
-	end)
-end
-
-local function centerWindow()
-	withFocusedWindow(function(win)
-		local frame = win:frame()
-		local screen = win:screen():frame()
-
-		frame.x = screen.x + (screen.w - frame.w) / 2
-		frame.y = screen.y + (screen.h - frame.h) / 2
-
-		win:setFrame(frame, config.animationDuration)
+		resizeWindowCentered(frame.w * (factor - 1), frame.h * (factor - 1))
 	end)
 end
 
@@ -264,6 +216,7 @@ end
 -- Key Bindings
 --------------------------
 
+-- 사이클 위치 지정
 hs.hotkey.bind(config.mod, "h", function()
 	cycleWindowSize("left")
 end)
@@ -271,19 +224,21 @@ hs.hotkey.bind(config.mod, "l", function()
 	cycleWindowSize("right")
 end)
 
+-- 레이아웃 지정
 for key, layout in pairs(layouts) do
 	hs.hotkey.bind(config.mod, key, function()
-		moveWindow(layout[1], layout[2], layout[3], layout[4])
+		setWindowPosition(table.unpack(layout))
 	end)
 end
 
-for key, direction in pairs(directions) do
-	local fn = function()
-		moveByDirection(direction[1], direction[2])
-	end
-	hs.hotkey.bind(config.mod, key, fn, nil, fn)
+-- 창 이동 (반복 키 지원)
+for key, direction in pairs(moveDirections) do
+	bindRepeatKey(config.mod, key, function()
+		moveWindow(direction.dx, direction.dy)
+	end)
 end
 
+-- 화면 이동
 hs.hotkey.bind(config.mod, "[", function()
 	moveToScreen("previous")
 end)
@@ -291,36 +246,38 @@ hs.hotkey.bind(config.mod, "]", function()
 	moveToScreen("next")
 end)
 
+-- 창 크기 조절 (반복 키 지원)
 for key, direction in pairs(resizeDirections) do
-	local fn = function()
-		resizeByDirection(direction[1], direction[2])
-	end
-	hs.hotkey.bind(config.shiftMod, key, fn, nil, fn)
+	bindRepeatKey(config.resizeMod, key, function()
+		resizeByDirection(direction.dw, direction.dh)
+	end)
 end
 
-hs.hotkey.bind(
-	config.mod,
-	"=",
-	function()
-		resizeByPercent(config.resizeFactors.increase)
-	end,
-	nil,
-	function()
-		resizeByPercent(config.resizeFactors.increase)
-	end
-)
-hs.hotkey.bind(
-	config.mod,
-	"-",
-	function()
-		resizeByPercent(config.resizeFactors.decrease)
-	end,
-	nil,
-	function()
-		resizeByPercent(config.resizeFactors.decrease)
-	end
-)
+-- 퍼센트 크기 조절 (반복 키 지원)
+bindRepeatKey(config.mod, "=", function()
+	resizeByPercent(config.resizeFactors.increase)
+end)
+bindRepeatKey(config.mod, "-", function()
+	resizeByPercent(config.resizeFactors.decrease)
+end)
 
-hs.hotkey.bind(config.mod, "return", maximizeWindow)
-hs.hotkey.bind(config.mod, "0", minimizeWindow)
-hs.hotkey.bind(config.mod, "space", centerWindow)
+-- 창 제어
+hs.hotkey.bind(config.mod, "return", function()
+	withFocusedWindow(function(win)
+		win:maximize(config.animationDuration)
+	end)
+end)
+hs.hotkey.bind(config.mod, "0", function()
+	withFocusedWindow(function(win)
+		win:minimize()
+	end)
+end)
+hs.hotkey.bind(config.mod, "space", function()
+	withFocusedWindow(function(win)
+		local frame = win:frame()
+		local screen = win:screen():frame()
+		frame.x = screen.x + (screen.w - frame.w) / 2
+		frame.y = screen.y + (screen.h - frame.h) / 2
+		win:setFrame(frame, config.animationDuration)
+	end)
+end)
