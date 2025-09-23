@@ -1,4 +1,3 @@
--- 앱별 입력 소스 설정
 local appInputMethods = {
 	["Xcode"] = "com.apple.keylayout.ABC",
 	["Visual Studio Code"] = "com.apple.keylayout.ABC",
@@ -9,19 +8,11 @@ local appInputMethods = {
 	["KakaoTalk"] = "com.apple.inputmethod.Korean.2SetKorean",
 }
 
--- 앱 전환 감지 및 입력 소스 변경
-function applicationWatcher(appName, eventType, appObject)
-	if eventType == hs.application.watcher.activated then
-		local targetInputMethod = appInputMethods[appName]
-		if targetInputMethod then
-			hs.keycodes.currentSourceID(targetInputMethod)
+hs.application.watcher
+	.new(function(appName, eventType)
+		if eventType == hs.application.watcher.activated and appInputMethods[appName] then
+			hs.keycodes.currentSourceID(appInputMethods[appName])
 		end
-	end
-end
+	end)
+	:start()
 
--- 와처 시작
-appWatcher = hs.application.watcher.new(applicationWatcher)
-appWatcher:start()
-
--- 콘솔에서 인풋 소스 확인하는 코드
--- print(hs.keycodes.currentSourceID())
