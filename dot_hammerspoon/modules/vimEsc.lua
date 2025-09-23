@@ -1,7 +1,7 @@
 local english = "com.apple.keylayout.ABC"
 local escapeBind
 
-function setEnglish()
+local function setEnglish()
     local source = hs.keycodes.currentSourceID()
     if not (source == english) then
         hs.keycodes.currentSourceID(english)
