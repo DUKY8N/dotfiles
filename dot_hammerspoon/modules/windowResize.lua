@@ -15,55 +15,154 @@ local config = {
 	cycleTimeout = 0.5, -- 빠른 재클릭 감지 시간 (초)
 }
 
-local lastCycle = { time = 0 } -- {direction, time, index}
-local cycleLayouts = {
-	left = {
-		{ 0, 0, 0.5, 1 }, -- 1/2
-		{ 0, 0, 0.33, 1 }, -- 1/3
-		{ 0, 0, 0.67, 1 }, -- 2/3
-	},
-	right = {
-		{ 0.5, 0, 0.5, 1 }, -- 1/2 (오른쪽)
-		{ 0.67, 0, 0.33, 1 }, -- 1/3 (오른쪽)
-		{ 0.33, 0, 0.67, 1 }, -- 2/3 (오른쪽)
-	},
-}
+local lastCycle = { time = 0 } -- {key, time, index}
 
-local layouts = {
-	-- h, l은 사이클링으로 처리됨
-	k = { 0, 0, 1, 0.5 }, -- 위쪽 절반
-	j = { 0, 0.5, 1, 0.5 }, -- 아래쪽 절반
+--------------------------
+-- Factory Functions for Operations
+--------------------------
+local function cycle(key, side, layouts)
+	local layoutsWithDesc = {}
+	for i, layout in ipairs(layouts) do
+		table.insert(layoutsWithDesc, {
+			x = layout[1],
+			y = layout[2],
+			w = layout[3],
+			h = layout[4],
+			desc = layout.desc or string.format("Layout %d", i),
+		})
+	end
+	return {
+		key = key,
+		mod = config.mod,
+		type = "cycle",
+		name = side .. " Side Cycle",
+		layouts = layoutsWithDesc,
+	}
+end
 
-	-- 1/4 분할
-	u = { 0, 0, 0.5, 0.5 }, -- 좌상단
-	i = { 0.5, 0, 0.5, 0.5 }, -- 우상단
-	m = { 0, 0.5, 0.5, 0.5 }, -- 좌하단
-	[","] = { 0.5, 0.5, 0.5, 0.5 }, -- 우하단
+local function layout(key, name, x, y, w, h)
+	return {
+		key = key,
+		mod = config.mod,
+		type = "layout",
+		name = name,
+		rect = { x = x, y = y, w = w, h = h },
+	}
+end
 
-	-- 1/3 분할
-	["7"] = { 0, 0, 0.33, 1 }, -- 왼쪽 1/3
-	["8"] = { 0.33, 0, 0.34, 1 }, -- 중앙 1/3 (0.34로 반올림 오차 보정)
-	["9"] = { 0.67, 0, 0.33, 1 }, -- 오른쪽 1/3
+local function move(key, direction, dx, dy)
+	return {
+		key = key,
+		mod = config.mod,
+		type = "move",
+		name = "Move " .. direction,
+		delta = { x = dx, y = dy },
+		repeatable = true,
+	}
+end
 
-	-- 중앙 정렬
-	["\\"] = { 0.1, 0.1, 0.8, 0.8 }, -- 80% 크기
-	["delete"] = { 0.2, 0.2, 0.6, 0.6 }, -- 60% 크기
-}
+local function resize(key, action, dw, dh)
+	return {
+		key = key,
+		mod = config.resizeMod,
+		type = "resize",
+		name = action,
+		size = { w = dw, h = dh },
+		repeatable = true,
+	}
+end
 
--- 창 이동 방향
-local moveDirections = {
-	left = { dx = -1, dy = 0 },
-	right = { dx = 1, dy = 0 },
-	up = { dx = 0, dy = -1 },
-	down = { dx = 0, dy = 1 },
-}
+local function scale(key, direction, factor)
+	return {
+		key = key,
+		mod = config.mod,
+		type = "scale",
+		name = "Scale " .. direction,
+		factor = factor,
+		repeatable = true,
+	}
+end
 
--- 창 크기 조절 방향 (중심점 기준)
-local resizeDirections = {
-	left = { dw = -1, dh = 0 }, -- 너비 감소
-	right = { dw = 1, dh = 0 }, -- 너비 증가
-	up = { dw = 0, dh = 1 }, -- 높이 증가
-	down = { dw = 0, dh = -1 }, -- 높이 감소
+local function screen(key, direction)
+	return {
+		key = key,
+		mod = config.mod,
+		type = "screen",
+		name = direction:gsub("^%l", string.upper) .. " Screen",
+		direction = direction,
+	}
+end
+
+local function control(key, action)
+	local names = {
+		maximize = "Maximize",
+		minimize = "Minimize",
+		center = "Center",
+	}
+	return {
+		key = key,
+		mod = config.mod,
+		type = "control",
+		name = names[action] or action,
+		action = action,
+	}
+end
+
+--------------------------
+-- Unified Window Operations Table
+--------------------------
+local windowOps = {
+	cycle("h", "Left", {
+		{ 0, 0, 0.5, 1, desc = "Half" },
+		{ 0, 0, 0.33, 1, desc = "Third" },
+		{ 0, 0, 0.67, 1, desc = "Two-thirds" },
+	}),
+	cycle("l", "Right", {
+		{ 0.5, 0, 0.5, 1, desc = "Half" },
+		{ 0.67, 0, 0.33, 1, desc = "Third" },
+		{ 0.33, 0, 0.67, 1, desc = "Two-thirds" },
+	}),
+
+	-- Halves
+	layout("k", "Top Half", 0, 0, 1, 0.5),
+	layout("j", "Bottom Half", 0, 0.5, 1, 0.5),
+
+	-- Quarters
+	layout("u", "Top-Left Quarter", 0, 0, 0.5, 0.5),
+	layout("i", "Top-Right Quarter", 0.5, 0, 0.5, 0.5),
+	layout("m", "Bottom-Left Quarter", 0, 0.5, 0.5, 0.5),
+	layout(",", "Bottom-Right Quarter", 0.5, 0.5, 0.5, 0.5),
+
+	-- Thirds
+	layout("7", "Left Third", 0, 0, 0.33, 1),
+	layout("8", "Center Third", 0.33, 0, 0.34, 1),
+	layout("9", "Right Third", 0.67, 0, 0.33, 1),
+
+	-- Centered
+	layout("\\", "80% Centered", 0.1, 0.1, 0.8, 0.8),
+	layout("delete", "60% Centered", 0.2, 0.2, 0.6, 0.6),
+
+	move("left", "Left", -1, 0),
+	move("right", "Right", 1, 0),
+	move("up", "Up", 0, -1),
+	move("down", "Down", 0, 1),
+
+	resize("left", "Shrink Width", -1, 0),
+	resize("right", "Expand Width", 1, 0),
+	resize("up", "Expand Height", 0, 1),
+	resize("down", "Shrink Height", 0, -1),
+
+	scale("=", "Up", config.resizeFactors.increase),
+	scale("-", "Down", config.resizeFactors.decrease),
+
+	-- ==================== SCREEN OPERATIONS ====================
+	screen("[", "previous"),
+	screen("]", "next"),
+
+	-- ==================== CONTROL OPERATIONS ====================
+	control("return", "maximize"),
+	control("0", "minimize"),
+	control("space", "center"),
 }
 
 --------------------------
@@ -130,14 +229,15 @@ local function setWindowPosition(x, y, w, h)
 	end)
 end
 
-local function cycleWindowSize(direction)
+local function cycleWindowSize(op)
 	withFocusedWindow(function(win)
 		local now = hs.timer.secondsSinceEpoch()
-		local layoutCount = #cycleLayouts[direction]
+		local layouts = op.layouts
+		local layoutCount = #layouts
 		local layoutIndex
 
 		-- 빠른 재클릭: 이전 인덱스에서 계속
-		if lastCycle.direction == direction and (now - lastCycle.time) <= config.cycleTimeout then
+		if lastCycle.key == op.key and (now - lastCycle.time) <= config.cycleTimeout then
 			layoutIndex = (lastCycle.index % layoutCount) + 1
 		else
 			-- 현재 창 상태 감지
@@ -147,17 +247,18 @@ local function cycleWindowSize(direction)
 			local normalizedWidth = frame.w / screen.w
 
 			layoutIndex = 1 -- 기본값
-			for i, layout in ipairs(cycleLayouts[direction]) do
-				if isWithinTolerance(normalizedX, layout[1]) and isWithinTolerance(normalizedWidth, layout[3]) then
+			for i, layout in ipairs(layouts) do
+				if isWithinTolerance(normalizedX, layout.x) and isWithinTolerance(normalizedWidth, layout.w) then
 					layoutIndex = (i % layoutCount) + 1
 					break
 				end
 			end
 		end
 
-		setWindowPosition(table.unpack(cycleLayouts[direction][layoutIndex]))
+		local layout = layouts[layoutIndex]
+		setWindowPosition(layout.x, layout.y, layout.w, layout.h)
 
-		lastCycle.direction = direction
+		lastCycle.key = op.key
 		lastCycle.time = now
 		lastCycle.index = layoutIndex
 	end)
@@ -212,72 +313,70 @@ local function resizeByPercent(factor)
 	end)
 end
 
---------------------------
--- Key Bindings
---------------------------
-
--- 사이클 위치 지정
-hs.hotkey.bind(config.mod, "h", function()
-	cycleWindowSize("left")
-end)
-hs.hotkey.bind(config.mod, "l", function()
-	cycleWindowSize("right")
-end)
-
--- 레이아웃 지정
-for key, layout in pairs(layouts) do
-	hs.hotkey.bind(config.mod, key, function()
-		setWindowPosition(table.unpack(layout))
-	end)
-end
-
--- 창 이동 (반복 키 지원)
-for key, direction in pairs(moveDirections) do
-	bindRepeatKey(config.mod, key, function()
-		moveWindow(direction.dx, direction.dy)
-	end)
-end
-
--- 화면 이동
-hs.hotkey.bind(config.mod, "[", function()
-	moveToScreen("previous")
-end)
-hs.hotkey.bind(config.mod, "]", function()
-	moveToScreen("next")
-end)
-
--- 창 크기 조절 (반복 키 지원)
-for key, direction in pairs(resizeDirections) do
-	bindRepeatKey(config.resizeMod, key, function()
-		resizeByDirection(direction.dw, direction.dh)
-	end)
-end
-
--- 퍼센트 크기 조절 (반복 키 지원)
-bindRepeatKey(config.mod, "=", function()
-	resizeByPercent(config.resizeFactors.increase)
-end)
-bindRepeatKey(config.mod, "-", function()
-	resizeByPercent(config.resizeFactors.decrease)
-end)
-
--- 창 제어
-hs.hotkey.bind(config.mod, "return", function()
-	withFocusedWindow(function(win)
+-- Control actions table
+local controlActions = {
+	maximize = function(win)
 		win:maximize(config.animationDuration)
-	end)
-end)
-hs.hotkey.bind(config.mod, "0", function()
-	withFocusedWindow(function(win)
+	end,
+
+	minimize = function(win)
 		win:minimize()
-	end)
-end)
-hs.hotkey.bind(config.mod, "space", function()
-	withFocusedWindow(function(win)
+	end,
+
+	center = function(win)
 		local frame = win:frame()
 		local screen = win:screen():frame()
 		frame.x = screen.x + (screen.w - frame.w) / 2
 		frame.y = screen.y + (screen.h - frame.h) / 2
 		win:setFrame(frame, config.animationDuration)
-	end)
-end)
+	end,
+}
+
+-- Control action handler
+local function handleControlAction(op)
+	local action = controlActions[op.action]
+	if action then
+		withFocusedWindow(action)
+	end
+end
+
+--------------------------
+-- Operation Handlers
+--------------------------
+local handlers = {
+	cycle = cycleWindowSize,
+	layout = function(op)
+		local rect = op.rect
+		setWindowPosition(rect.x, rect.y, rect.w, rect.h)
+	end,
+	move = function(op)
+		local delta = op.delta
+		moveWindow(delta.x, delta.y)
+	end,
+	resize = function(op)
+		local size = op.size
+		resizeByDirection(size.w, size.h)
+	end,
+	scale = function(op)
+		resizeByPercent(op.factor)
+	end,
+	screen = function(op)
+		moveToScreen(op.direction)
+	end,
+	control = handleControlAction,
+}
+
+--------------------------
+-- Unified Key Binding
+--------------------------
+for _, op in ipairs(windowOps) do
+	local handler = function()
+		handlers[op.type](op)
+	end
+
+	if op.repeatable then
+		bindRepeatKey(op.mod, op.key, handler)
+	else
+		hs.hotkey.bind(op.mod, op.key, handler)
+	end
+end
