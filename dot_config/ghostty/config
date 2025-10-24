@@ -1,7 +1,7 @@
 # appearance
 theme = "Catppuccin Mocha"
-font-family = "Iosevka Nerd Font Propo"
-font-family = "D2CodingLigature Nerd Font Mono"
+font-family = "Sarasa Term K"
+font-family = "Symbols Nerd Font"
 font-size = 16
 window-padding-balance = true
 macos-titlebar-proxy-icon = hidden

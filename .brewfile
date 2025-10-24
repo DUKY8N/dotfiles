@@ -84,10 +84,12 @@ cask "thebrowsercompany-dia"
 cask "visual-studio-code"
 cask "zen"
 
-cask "font-iosevka-nerd-font"
-cask "font-d2coding-nerd-font"
 cask "font-comic-mono"
+cask "font-d2coding-nerd-font"
+cask "font-iosevka-nerd-font"
 cask "font-pretendard"
+cask "font-sarasa-gothic"
+cask "font-symbols-only-nerd-font"
 
 mas "Amphetamine", id: 937984704
 mas "BandiNamer", id: 6451223045
