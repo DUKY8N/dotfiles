@@ -9,9 +9,10 @@ local APP_SEARCH_PATHS = {
 -- 단축키 설정
 local appList = {
 	{ key = "'", app = "Calendar" },
-	{ key = ",", app = "Claude" },
+	{ key = ",", app = "ChatGPT" },
+	{ key = "0", app = "Raindrop.io" },
 	{ key = "8", app = "Zen" },
-	{ key = "9", app = "Dia" },
+	{ key = "9", app = "ChatGPT Atlas" },
 	{ key = ";", app = "Things3" },
 	{ key = "i", app = "iPhone Mirroring" },
 	{ key = "j", app = "RunJS" },
@@ -66,4 +67,3 @@ for _, config in ipairs(appList) do
 		toggleApp(config.app)
 	end)
 end
-
