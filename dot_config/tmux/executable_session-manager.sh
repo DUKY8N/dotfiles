@@ -8,6 +8,8 @@ echo "$s" | fzf \
   --height=100% \
   --border=none \
   --margin=0 \
+  --header-first \
+  --prompt="  " \
   --header "Open: ↵ | New: C-n | Rename: C-r | Delete: C-d" \
   \
   --bind "enter:execute(
