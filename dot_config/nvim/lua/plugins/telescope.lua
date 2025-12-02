@@ -1,3 +1,5 @@
+local actions = require 'telescope.actions'
+
 return {
     'nvim-telescope/telescope.nvim',
     cmd = 'Telescope',
@@ -13,10 +15,14 @@ return {
         defaults = {
             mappings = {
                 i = {
-                    ['<esc>'] = require('telescope.actions').close,
+                    ['<esc>'] = actions.close,
+                    ['<C-j>'] = actions.move_selection_next,
+                    ['<C-k>'] = actions.move_selection_previous,
                 },
                 n = {
-                    ['<esc>'] = require('telescope.actions').close,
+                    ['<esc>'] = actions.close,
+                    ['<C-j>'] = actions.move_selection_next,
+                    ['<C-k>'] = actions.move_selection_previous,
                 },
             },
         },
