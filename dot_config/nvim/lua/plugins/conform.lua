@@ -1,5 +1,15 @@
 return {
     'stevearc/conform.nvim',
+    keys = {
+        {
+            '<leader>lf',
+            function()
+                require('conform').format()
+            end,
+            desc = 'Format buffer (Conform)',
+            mode = 'n',
+        },
+    },
     opts = {
         formatters_by_ft = {
 			css = { "prettier" },
