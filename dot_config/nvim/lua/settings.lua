@@ -10,6 +10,8 @@ vim.o.tabstop = 4
 vim.o.swapfile = false
 vim.o.laststatus = 3
 vim.o.cmdheight = 0
+vim.o.termguicolors = true
+vim.o.showtabline = 1
 
 vim.diagnostic.config({
     virtual_text = true,
