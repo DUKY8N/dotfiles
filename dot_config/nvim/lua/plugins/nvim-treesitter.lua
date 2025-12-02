@@ -1,0 +1,38 @@
+return {
+    'nvim-treesitter/nvim-treesitter',
+    build = ':TSUpdate',
+    config = function()
+        require('nvim-treesitter.configs').setup {
+            ensure_installed = {
+                'bash',
+                'c',
+                'cpp',
+                'css',
+                'gitcommit',
+                'go',
+                'gomod',
+                'gotmpl',
+                'html',
+                'java',
+                'javascript',
+                'json',
+                'json5',
+                'jsonc',
+                'lua',
+                'markdown',
+                'markdown_inline',
+                'python',
+                'query',
+                'regex',
+                'rust',
+                'scss',
+                'toml',
+                'tsx',
+                'typescript',
+                'vim',
+                'vimdoc',
+                'yaml',
+            },
+        }
+    end,
+}
