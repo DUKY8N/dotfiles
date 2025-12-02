@@ -33,6 +33,8 @@ return {
                 'vimdoc',
                 'yaml',
             },
+            highlight = { enable = true },
+            indent = { enable = true, disable = {} },
         }
     end,
 }
