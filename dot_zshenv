@@ -1,2 +1,5 @@
 # uv
 export PATH="/Users/duky8n/.local/bin:$PATH"
+
+# Rust
+. "$HOME/.cargo/env"

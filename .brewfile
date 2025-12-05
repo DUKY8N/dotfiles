@@ -30,8 +30,7 @@ brew "pandoc" # 문서 포맷 변환기
 brew "poppler"
 brew "resvg" # SVG 렌더링 도구 (yazi에서 사용)
 brew "ripgrep" # grep 개선 도구
-brew "rust"
-brew "rust-analyzer"
+brew "rustup"
 brew "sd"
 brew "sevenzip" # 압축 도구 (yazi에서 사용)
 brew "starship"
