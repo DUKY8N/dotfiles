@@ -1,4 +1,4 @@
-local english = "com.apple.keylayout.ABC"
+local english = 'com.apple.keylayout.ABC'
 local escapeBind
 
 local function setEnglish()
@@ -12,4 +12,4 @@ local function setEnglish()
 end
 
 escapeBind = hs.hotkey.new({}, 'escape', setEnglish):enable()
-hs.hotkey.bind({'ctrl'}, 33, setEnglish)
+hs.hotkey.bind({ 'ctrl' }, 33, setEnglish)
