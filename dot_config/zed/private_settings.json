@@ -1,0 +1,39 @@
+{
+    "agent_buffer_font_size": 16.0,
+    "agent_ui_font_size": 18.0,
+    "buffer_font_fallbacks": ["Symbols Nerd Font"],
+    "buffer_font_family": "Sarasa Mono K",
+    "buffer_font_size": 16.0,
+    "buffer_line_height": "standard",
+    "cursor_blink": false,
+    "cursor_shape": "bar",
+    "hard_tabs": false,
+    "icon_theme": "Catppuccin Mocha",
+    "languages": {
+        "JavaScript": { "tab_size": 2 },
+        "TypeScript": { "tab_size": 2 },
+        "TSX": { "tab_size": 2 }
+    },
+    "project_panel": {
+        "entry_spacing": "standard"
+    },
+    "relative_line_numbers": "enabled",
+    "tab_size": 4,
+    "telemetry": {
+        "diagnostics": false,
+        "metrics": false
+    },
+    "theme": {
+        "mode": "dark",
+        "light": "One Light",
+        "dark": "Catppuccin Mocha"
+    },
+    "toolbar": {
+        "breadcrumbs": false,
+        "quick_actions": false
+    },
+    "ui_font_fallbacks": ["Symbols Nerd Font"],
+    "ui_font_family": "Sarasa Mono K",
+    "ui_font_size": 16.0,
+    "vim_mode": true
+}
