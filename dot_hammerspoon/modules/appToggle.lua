@@ -21,6 +21,7 @@ local appList = {
 	{ key = "n", app = "Notes" },
 	{ key = "o", app = "Obsidian" },
 	{ key = "return", app = "Ghostty" },
+	{ key = "space", app = "Zed" },
 }
 
 -- Bundle ID 캐시
