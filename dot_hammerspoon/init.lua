@@ -1,7 +1,7 @@
 -- init.lua
 -- Include modules
 local ROOT_PATH = os.getenv 'HOME' .. '/' .. '.hammerspoon'
-local MODULE_DIR = 'modules'
+local MODULE_DIR = 'Spoons'
 local MODULE_SUFFIX = '.lua'
 
 local function loadModuleByName(name)
