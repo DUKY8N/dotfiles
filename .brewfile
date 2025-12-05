@@ -40,6 +40,7 @@ brew "rust-analyzer"
 brew "sd" # sed 개선 도구
 brew "sevenzip" # 압축 도구 (yazi에서 사용)
 brew "starship"
+brew "stylua"
 brew "swiftly"
 brew "termshark"
 brew "thefuck"
