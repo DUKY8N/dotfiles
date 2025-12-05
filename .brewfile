@@ -77,6 +77,7 @@ cask "ollama-app"
 cask "raindropio"
 cask "runjs"
 cask "visual-studio-code"
+cask "zed"
 cask "zen"
 
 cask "font-comic-mono"
