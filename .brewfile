@@ -1,12 +1,10 @@
 brew "mas"
 
-brew "asciinema" # 터미널 세션을 녹화/공유하는 도구
 brew "bat"
 brew "btop"
 brew "chezmoi"
 brew "colima" # Docker Desktop 대체
 brew "convmv" # 파일명 인코딩 변환기
-brew "diskonaut" # 디스크 사용량을 시각화하는 도구
 brew "docker"
 brew "docker-compose"
 brew "dust" # du 개선 도구 # 디스크 사용량을 시각화하는 도구
@@ -19,8 +17,6 @@ brew "fzf"
 brew "gh"
 brew "git"
 brew "git-delta"
-brew "gource"
-brew "helix"
 brew "jq"
 brew "lazydocker"
 brew "lazygit"
@@ -32,17 +28,15 @@ brew "neovim"
 brew "nmap"
 brew "pandoc" # 문서 포맷 변환기
 brew "poppler"
-brew "posting"
 brew "resvg" # SVG 렌더링 도구 (yazi에서 사용)
 brew "ripgrep" # grep 개선 도구
 brew "rust"
 brew "rust-analyzer"
-brew "sd" # sed 개선 도구
+brew "sd"
 brew "sevenzip" # 압축 도구 (yazi에서 사용)
 brew "starship"
 brew "stylua"
 brew "swiftly"
-brew "termshark"
 brew "thefuck"
 brew "tig"
 brew "tlrc"
@@ -63,7 +57,6 @@ cask "betterdisplay"
 cask "calibre"
 cask "chatgpt"
 cask "chatgpt-atlas"
-cask "claude"
 cask "cleanshot"
 cask "codex"
 cask "deepl"
@@ -74,7 +67,6 @@ cask "google-chrome"
 cask "hammerspoon"
 cask "hyperkey"
 cask "iina"
-cask "itsycal"
 cask "jordanbaird-ice"
 cask "krita"
 cask "mac-mouse-fix"
@@ -93,21 +85,13 @@ cask "font-pretendard"
 cask "font-sarasa-gothic"
 cask "font-symbols-only-nerd-font"
 
-mas "Amphetamine", id: 937984704
 mas "BandiNamer", id: 6451223045
 mas "Bandizip", id: 1265704574
-mas "ExcalidrawZ", id: 6636493997
 mas "Flow", id: 1423210932
-mas "GitGrass", id: 1501139279
 mas "Gifski", id: 1351639930
-mas "HazeOver", id: 430798174
 mas "KakaoTalk", id: 869223134
 mas "Klack", id: 6446206067
 mas "Lookupper", id: 1667225994
-mas "News Explorer", id: 1032670789
-mas "One Thing", id: 1604176982
 mas "OwlOCR", id: 6462355119
 mas "Subscriptions", id: 1577082754
-mas "Typibara", id: 6701996122
 mas "Things", id: 904280696
-mas "Xcode", id: 497799835
