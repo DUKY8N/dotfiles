@@ -1,17 +1,8 @@
-# oh-my-zsh
-export ZSH="$HOME/.oh-my-zsh"
-ZSH_THEME="robbyrussell"
-HYPHEN_INSENSITIVE="true"
-plugins=(
-  fzf-tab
-  git
-  thefuck
-  zsh-autosuggestions
-  zsh-hangul
-  zsh-syntax-highlighting
-)
+autoload -Uz compinit && compinit
 
-. "$ZSH/oh-my-zsh.sh"
+source ~/.local/share/zsh/plugins/fzf-tab/fzf-tab.plugin.zsh
+source ~/.local/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
+source ~/.local/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
 
 # vivid (themes)
 export LS_COLORS="$(vivid generate catppuccin-mocha)"
@@ -27,7 +18,7 @@ export MANPAGER="nvim +Man!"
 
 # mise
 eval "$(mise activate zsh)"
-eval "$(mise completion zsh)"
+# eval "$(mise completion zsh)"
 
 # zoxide
 eval "$(zoxide init zsh)"
