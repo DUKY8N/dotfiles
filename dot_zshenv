@@ -1,3 +1,5 @@
+#!/bin/zsh
+
 # uv
 export PATH="/Users/duky8n/.local/bin:$PATH"
 
