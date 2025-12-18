@@ -1,17 +1,24 @@
-setopt extended_history
-setopt hist_expire_dups_first
-setopt hist_ignore_dups
-setopt hist_ignore_space
-setopt hist_verify
-setopt share_history
-unsetopt menu_complete
-unsetopt flowcontrol
-setopt auto_menu
-setopt complete_in_word
-setopt always_to_end
-setopt auto_pushd
-setopt pushd_ignore_dups
+setopt alwaystoend
+setopt autocd
+setopt autopushd
+setopt combiningchars
+setopt completeinword
+setopt extendedhistory
+setopt noflowcontrol
+setopt histexpiredupsfirst
+setopt histignoredups
+setopt histignorespace
+setopt histverify
+setopt interactive
+setopt interactivecomments
+setopt login
+setopt longlistjobs
+setopt monitor
+setopt promptsubst
+setopt pushdignoredups
 setopt pushdminus
+setopt sharehistory
+setopt zle
 
 autoload -Uz compinit && compinit
 
