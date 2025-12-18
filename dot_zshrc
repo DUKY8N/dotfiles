@@ -1,34 +1,14 @@
 #!/bin/zsh
 
-setopt alwaystoend
-setopt autocd
-setopt autopushd
-setopt combiningchars
-setopt completeinword
-setopt extendedhistory
-setopt noflowcontrol
-setopt histexpiredupsfirst
-setopt histignoredups
-setopt histignorespace
-setopt histverify
-setopt interactive
-setopt interactivecomments
-setopt login
-setopt longlistjobs
-setopt monitor
-setopt promptsubst
-setopt pushdignoredups
-setopt pushdminus
-setopt sharehistory
-setopt zle
+# XDG base directories.
+export XDG_CACHE_HOME="$HOME/.cache"
+export XDG_CONFIG_HOME="$HOME/.config"
+export XDG_DATA_HOME="$HOME/.local/share"
+export XDG_STATE_HOME="$HOME/.local/state"
 
-autoload -Uz compinit && compinit
-
-# plugins
-[ -r ~/.config/zsh/plugins.zsh ] && source ~/.config/zsh/plugins.zsh
-
-# tools
-[ -r ~/.config/zsh/tools.zsh ] && source ~/.config/zsh/tools.zsh
-
-# load aliases
-[ -r ~/.config/zsh/aliases.zsh ] && source ~/.config/zsh/aliases.zsh
+source "$XDG_CONFIG_HOME/zsh/options.zsh"
+source "$XDG_CONFIG_HOME/zsh/completion.zsh"
+source "$XDG_CONFIG_HOME/zsh/tools.zsh"
+source "$XDG_CONFIG_HOME/zsh/plugins.zsh"
+source "$XDG_CONFIG_HOME/zsh/keys.zsh"
+source "$XDG_CONFIG_HOME/zsh/aliases.zsh"

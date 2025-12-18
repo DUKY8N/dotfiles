@@ -4,7 +4,7 @@
 export LS_COLORS="$(vivid generate catppuccin-mocha)"
 
 # eza
-export EZA_CONFIG_DIR="$HOME/.config/eza"
+export EZA_CONFIG_DIR="$XDG_CONFIG_HOME/eza"
 
 # nvim
 export EDITOR="nvim"
@@ -14,7 +14,7 @@ export MANPAGER="nvim +Man!"
 
 # mise
 eval "$(mise activate zsh)"
-# eval "$(mise completion zsh)"
+eval "$(mise completion zsh)"
 
 # zoxide
 eval "$(zoxide init zsh)"
