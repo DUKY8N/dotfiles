@@ -15,31 +15,11 @@ setopt pushdminus
 
 autoload -Uz compinit && compinit
 
-source ~/.local/share/zsh/plugins/fzf-tab/fzf-tab.plugin.zsh
-source ~/.local/share/zsh/plugins/zsh-autosuggestions/zsh-autosuggestions.zsh
-source ~/.local/share/zsh/plugins/zsh-syntax-highlighting/zsh-syntax-highlighting.zsh
+# plugins
+[ -r ~/.config/zsh/plugins.zsh ] && source ~/.config/zsh/plugins.zsh
 
-# vivid (themes)
-export LS_COLORS="$(vivid generate catppuccin-mocha)"
-
-# eza
-export EZA_CONFIG_DIR="$HOME/.config/eza"
-
-# nvim
-export EDITOR="nvim"
-
-# man
-export MANPAGER="nvim +Man!"
-
-# mise
-eval "$(mise activate zsh)"
-# eval "$(mise completion zsh)"
-
-# zoxide
-eval "$(zoxide init zsh)"
-
-# starship
-eval "$(starship init zsh)"
+# tools
+[ -r ~/.config/zsh/tools.zsh ] && source ~/.config/zsh/tools.zsh
 
 # load aliases
-[ -f ~/.zsh_aliases ] && . ~/.zsh_aliases
+[ -r ~/.config/zsh/aliases.zsh ] && source ~/.config/zsh/aliases.zsh
