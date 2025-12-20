@@ -29,19 +29,27 @@ local bundleIDCache = {}
 
 -- 앱 이름으로 Bundle ID 찾기
 local function getBundleIDFromAppName(appName)
+    local cached = bundleIDCache[appName]
+    if cached ~= nil then
+        return cached or nil
+    end
+
     for _, basePath in ipairs(APP_SEARCH_PATHS) do
         local appPath = basePath .. appName .. '.app'
         local appInfo = hs.application.infoForBundlePath(appPath)
         if appInfo and appInfo.CFBundleIdentifier then
+            bundleIDCache[appName] = appInfo.CFBundleIdentifier
             return appInfo.CFBundleIdentifier
         end
     end
+
+    bundleIDCache[appName] = false
     return nil
 end
 
 -- 앱 토글 함수
 local function toggleApp(appName)
-    local bundleID = bundleIDCache[appName]
+    local bundleID = getBundleIDFromAppName(appName)
     if not bundleID then
         return
     end
@@ -52,14 +60,6 @@ local function toggleApp(appName)
         frontApp:hide()
     else
         hs.application.launchOrFocusByBundleID(bundleID)
-    end
-end
-
--- 초기화: Bundle ID 캐싱
-for _, config in ipairs(appList) do
-    local bundleID = getBundleIDFromAppName(config.app)
-    if bundleID then
-        bundleIDCache[config.app] = bundleID
     end
 end
 
