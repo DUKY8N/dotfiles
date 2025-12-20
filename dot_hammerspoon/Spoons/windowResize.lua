@@ -132,15 +132,14 @@ local function resizeByPercent(factor)
     end)
 end
 
-local function cycleWindowSize(op)
+local function cycleWindowSize(key, layouts)
     withFocusedWindow(function(win)
         local now = hs.timer.secondsSinceEpoch()
-        local layouts = op.layouts
         local layoutCount = #layouts
         local layoutIndex
 
         -- 빠른 재클릭: 이전 인덱스에서 계속
-        if lastCycle.key == op.key and (now - lastCycle.time) <= config.cycleTimeout then
+        if lastCycle.key == key and (now - lastCycle.time) <= config.cycleTimeout then
             layoutIndex = (lastCycle.index % layoutCount) + 1
         else
             -- 현재 창 상태 감지
@@ -161,7 +160,7 @@ local function cycleWindowSize(op)
         local layout = layouts[layoutIndex]
         setWindowPosition(layout.x, layout.y, layout.w, layout.h)
 
-        lastCycle.key = op.key
+        lastCycle.key = key
         lastCycle.time = now
         lastCycle.index = layoutIndex
     end)
@@ -186,103 +185,68 @@ local controlActions = {
     end,
 }
 
--- Control action handler
-local function handleControlAction(op)
-    local action = controlActions[op.action]
-    if action then
-        withFocusedWindow(action)
-    end
-end
-
---------------------------
--- Operation Handlers
---------------------------
-local handlers = {
-    cycle = cycleWindowSize,
-    layout = function(op)
-        local rect = op.rect
-        setWindowPosition(rect.x, rect.y, rect.w, rect.h)
-    end,
-    move = function(op)
-        local delta = op.delta
-        moveWindow(delta.x, delta.y)
-    end,
-    resize = function(op)
-        local size = op.size
-        resizeByDirection(size.w, size.h)
-    end,
-    scale = function(op)
-        resizeByPercent(op.factor)
-    end,
-    screen = function(op)
-        moveToScreen(op.direction)
-    end,
-    control = handleControlAction,
-}
-
 --------------------------
 -- Factory Functions for Operations
 --------------------------
-local function cycle(key, side, layouts)
+local function cycle(key, layouts)
     local layoutsWithDesc = {}
-    for i, layout in ipairs(layouts) do
+    for _, layout in ipairs(layouts) do
         table.insert(layoutsWithDesc, {
             x = layout[1],
             y = layout[2],
             w = layout[3],
             h = layout[4],
-            desc = layout.desc or string.format('Layout %d', i),
         })
     end
     return {
         key = key,
         mod = config.mod,
-        type = 'cycle',
-        name = side .. ' Side Cycle',
-        layouts = layoutsWithDesc,
+        run = function()
+            cycleWindowSize(key, layoutsWithDesc)
+        end,
     }
 end
 
-local function layout(key, name, x, y, w, h)
+local function layout(key, x, y, w, h)
     return {
         key = key,
         mod = config.mod,
-        type = 'layout',
-        name = name,
-        rect = { x = x, y = y, w = w, h = h },
+        run = function()
+            setWindowPosition(x, y, w, h)
+        end,
     }
 end
 
-local function move(key, direction, dx, dy)
+local function move(key, dx, dy)
     return {
         key = key,
         mod = config.mod,
-        type = 'move',
-        name = 'Move ' .. direction,
-        delta = { x = dx, y = dy },
         repeatable = true,
+        run = function()
+            moveWindow(dx, dy)
+        end,
     }
 end
 
-local function resize(key, action, dw, dh)
+local function resize(key, dw, dh)
     return {
         key = key,
         mod = config.resizeMod,
-        type = 'resize',
-        name = action,
-        size = { w = dw, h = dh },
         repeatable = true,
+        run = function()
+            resizeByDirection(dw, dh)
+        end,
     }
 end
 
-local function scale(key, direction, factor)
+local function scale(key, factor)
     return {
         key = key,
         mod = config.mod,
-        type = 'scale',
-        name = 'Scale ' .. direction,
-        factor = factor,
         repeatable = true,
+        run = function()
+            resizeByPercent(factor)
+        end,
     }
 end
 
@@ -290,24 +254,22 @@ local function screen(key, direction)
     return {
         key = key,
         mod = config.mod,
-        type = 'screen',
-        name = direction:gsub('^%l', string.upper) .. ' Screen',
-        direction = direction,
+        run = function()
+            moveToScreen(direction)
+        end,
     }
 end
 
 local function control(key, action)
-    local names = {
-        maximize = 'Maximize',
-        minimize = 'Minimize',
-        center = 'Center',
-    }
     return {
         key = key,
         mod = config.mod,
-        type = 'control',
-        name = names[action] or action,
-        action = action,
+        run = function()
+            local handler = controlActions[action]
+            if handler then
+                withFocusedWindow(handler)
+            end
+        end,
     }
 end
 
@@ -315,48 +277,48 @@ end
 -- Unified Window Operations Table
 --------------------------
 local windowOps = {
-    cycle('h', 'Left', {
-        { 0, 0, 0.5,  1, desc = 'Half' },
-        { 0, 0, 0.33, 1, desc = 'Third' },
-        { 0, 0, 0.67, 1, desc = 'Two-thirds' },
+    cycle('h', {
+        { 0, 0, 0.5,  1 },
+        { 0, 0, 0.33, 1 },
+        { 0, 0, 0.67, 1 },
     }),
-    cycle('l', 'Right', {
-        { 0.5,  0, 0.5,  1, desc = 'Half' },
-        { 0.67, 0, 0.33, 1, desc = 'Third' },
-        { 0.33, 0, 0.67, 1, desc = 'Two-thirds' },
+    cycle('l', {
+        { 0.5,  0, 0.5,  1 },
+        { 0.67, 0, 0.33, 1 },
+        { 0.33, 0, 0.67, 1 },
     }),
 
     -- Halves
-    layout('k', 'Top Half', 0, 0, 1, 0.5),
-    layout('j', 'Bottom Half', 0, 0.5, 1, 0.5),
+    layout('k', 0, 0, 1, 0.5),
+    layout('j', 0, 0.5, 1, 0.5),
 
     -- Quarters
-    layout('u', 'Top-Left Quarter', 0, 0, 0.5, 0.5),
-    layout('i', 'Top-Right Quarter', 0.5, 0, 0.5, 0.5),
-    layout('m', 'Bottom-Left Quarter', 0, 0.5, 0.5, 0.5),
-    layout(',', 'Bottom-Right Quarter', 0.5, 0.5, 0.5, 0.5),
+    layout('u', 0, 0, 0.5, 0.5),
+    layout('i', 0.5, 0, 0.5, 0.5),
+    layout('m', 0, 0.5, 0.5, 0.5),
+    layout(',', 0.5, 0.5, 0.5, 0.5),
 
     -- Thirds
-    layout('7', 'Left Third', 0, 0, 0.33, 1),
-    layout('8', 'Center Third', 0.33, 0, 0.34, 1),
-    layout('9', 'Right Third', 0.67, 0, 0.33, 1),
+    layout('7', 0, 0, 0.33, 1),
+    layout('8', 0.33, 0, 0.34, 1),
+    layout('9', 0.67, 0, 0.33, 1),
 
     -- Centered
-    layout('\\', '80% Centered', 0.1, 0.1, 0.8, 0.8),
-    layout('delete', '60% Centered', 0.2, 0.2, 0.6, 0.6),
+    layout('\\', 0.1, 0.1, 0.8, 0.8),
+    layout('delete', 0.2, 0.2, 0.6, 0.6),
 
-    move('left', 'Left', -1, 0),
-    move('right', 'Right', 1, 0),
-    move('up', 'Up', 0, -1),
-    move('down', 'Down', 0, 1),
+    move('left', -1, 0),
+    move('right', 1, 0),
+    move('up', 0, -1),
+    move('down', 0, 1),
 
-    resize('h', 'Shrink Width', -1, 0),
-    resize('l', 'Expand Width', 1, 0),
-    resize('k', 'Expand Height', 0, 1),
-    resize('j', 'Shrink Height', 0, -1),
+    resize('h', -1, 0),
+    resize('l', 1, 0),
+    resize('k', 0, 1),
+    resize('j', 0, -1),
 
-    scale('=', 'Up', config.resizeFactors.increase),
-    scale('-', 'Down', config.resizeFactors.decrease),
+    scale('=', config.resizeFactors.increase),
+    scale('-', config.resizeFactors.decrease),
 
     -- ==================== SCREEN OPERATIONS ====================
     screen('[', 'previous'),
@@ -372,13 +334,9 @@ local windowOps = {
 -- Unified Key Binding
 --------------------------
 for _, op in ipairs(windowOps) do
-    local handler = function()
-        handlers[op.type](op)
-    end
-
     if op.repeatable then
-        bindRepeatKey(op.mod, op.key, handler)
+        bindRepeatKey(op.mod, op.key, op.run)
     else
-        hs.hotkey.bind(op.mod, op.key, handler)
+        hs.hotkey.bind(op.mod, op.key, op.run)
     end
 end
