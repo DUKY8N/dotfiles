@@ -5,14 +5,14 @@ local config = {
     mod = { 'ctrl', 'alt' },
     resizeMod = { 'shift', 'ctrl', 'alt' }, -- 크기 조절용 수식 키
     animationDuration = 0.125,
-    moveStep = 100, -- 픽셀 단위 이동 거리
-    resizeStep = 50, -- 픽셀 단위 크기 조절
+    moveStep = 100,                         -- 픽셀 단위 이동 거리
+    resizeStep = 50,                        -- 픽셀 단위 크기 조절
     resizeFactors = {
-        increase = 1.1, -- 10% 증가
-        decrease = 0.9, -- 10% 감소
+        increase = 1.1,                     -- 10% 증가
+        decrease = 0.9,                     -- 10% 감소
     },
-    tolerance = 0.01, -- 픽셀 완벽 정렬을 위한 허용 오차
-    cycleTimeout = 0.5, -- 빠른 재클릭 감지 시간 (초)
+    tolerance = 0.01,                       -- 픽셀 완벽 정렬을 위한 허용 오차
+    cycleTimeout = 0.5,                     -- 빠른 재클릭 감지 시간 (초)
 }
 
 local lastCycle = { time = 0 } -- {key, time, index}
@@ -316,12 +316,12 @@ end
 --------------------------
 local windowOps = {
     cycle('h', 'Left', {
-        { 0, 0, 0.5, 1, desc = 'Half' },
+        { 0, 0, 0.5,  1, desc = 'Half' },
         { 0, 0, 0.33, 1, desc = 'Third' },
         { 0, 0, 0.67, 1, desc = 'Two-thirds' },
     }),
     cycle('l', 'Right', {
-        { 0.5, 0, 0.5, 1, desc = 'Half' },
+        { 0.5,  0, 0.5,  1, desc = 'Half' },
         { 0.67, 0, 0.33, 1, desc = 'Third' },
         { 0.33, 0, 0.67, 1, desc = 'Two-thirds' },
     }),
@@ -350,10 +350,10 @@ local windowOps = {
     move('up', 'Up', 0, -1),
     move('down', 'Down', 0, 1),
 
-    resize('left', 'Shrink Width', -1, 0),
-    resize('right', 'Expand Width', 1, 0),
-    resize('up', 'Expand Height', 0, 1),
-    resize('down', 'Shrink Height', 0, -1),
+    resize('h', 'Shrink Width', -1, 0),
+    resize('l', 'Expand Width', 1, 0),
+    resize('k', 'Expand Height', 0, 1),
+    resize('j', 'Shrink Height', 0, -1),
 
     scale('=', 'Up', config.resizeFactors.increase),
     scale('-', 'Down', config.resizeFactors.decrease),
