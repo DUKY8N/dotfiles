@@ -1,0 +1,45 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+action="${1:-}"
+chezmoi_dir="${XDG_DATA_HOME:-$HOME/.local/share}/chezmoi"
+editor="${EDITOR:-vim}"
+
+usage() {
+    echo "Usage: $(basename "$0") {install|i|edit|e}"
+    echo
+    echo "Commands:"
+    echo "    install, i   Install packages from the platform-specific file"
+    echo "    edit,    e   Open the platform-specific package file in your editor"
+}
+die() { echo "Error: $*" >&2; exit 1; }
+
+case "$(uname -s)" in
+    Darwin)
+        pkg_file="$chezmoi_dir/.brewfile"
+        install() { brew bundle --file="$pkg_file"; }
+        ;;
+    Linux)
+        pkg_file="$chezmoi_dir/.pacmanfile"
+        install() { cat "$pkg_file" | sudo pacman -Syu --needed -; }
+        ;;
+    *)
+        die "Unsupported OS ($(uname -s))."
+        ;;
+esac
+
+case "$action" in
+    install|i)
+        [[ -f "$pkg_file" ]] || die "Package file not found: $pkg_file"
+        install
+        ;;
+    edit|e)
+        "$editor" "$pkg_file"
+        ;;
+    ""|-h|--help|help)
+        usage
+        ;;
+    *)
+        die "Unknown command: $action"$'\n\n'"$(usage)"
+        ;;
+esac
