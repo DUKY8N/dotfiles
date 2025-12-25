@@ -11,7 +11,7 @@ return {
             'lua-language-server',
             'prettier',
             'ruff',
-            'shellcheck'
+            'shellcheck',
             'stylua',
             'typescript-language-server',
         },
