@@ -27,11 +27,5 @@ alias vim="nvim"
 alias cd='z'
 
 # package management alias
-{{ if eq .chezmoi.os "darwin" -}}
-alias pli="brew bundle --file={{ .chezmoi.sourceDir }}/.brewfile"
-alias ple="nvim {{ .chezmoi.sourceDir }}/.brewfile"
-{{- end }}
-{{ if eq .chezmoi.os "linux" -}}
-alias pli="sudo pacman -Syu --needed - < {{ .chezmoi.sourceDir }}/.pacmanfile"
-alias ple="nvim {{ .chezmoi.sourceDir }}/.pacmanfile"
-{{- end }}
+alias pkgi="pkgman i"
+alias pkge="pkgman e"
