@@ -7,12 +7,13 @@ return {
     },
     opts = {
         ensure_installed = {
-            'lua-language-server',
-            'typescript-language-server',
-            'ruff',
-            'stylua',
-            'prettier',
             'eslint_d',
+            'lua-language-server',
+            'prettier',
+            'ruff',
+            'shellcheck'
+            'stylua',
+            'typescript-language-server',
         },
     },
 }
