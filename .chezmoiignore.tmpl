@@ -15,6 +15,6 @@ README.md
 
 {{ if ne .chezmoi.os "windows" -}}
 # Windows specific files - ignore on non-Windows systems
-AppData/
 Documents/
+.local/share/win-startup/
 {{- end }}
