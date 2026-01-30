@@ -6,6 +6,9 @@ export LS_COLORS="$(vivid generate catppuccin-mocha)"
 # eza
 export EZA_CONFIG_DIR="$XDG_CONFIG_HOME/eza"
 
+# lm studio
+export PATH="$PATH:/Users/duky8n/.lmstudio/bin"
+
 # nvim
 export EDITOR="nvim"
 
