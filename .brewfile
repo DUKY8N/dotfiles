@@ -36,9 +36,9 @@ brew "sevenzip" # 압축 도구 (yazi에서 사용)
 brew "starship"
 brew "stylua"
 brew "swiftly"
+brew "tealdeer" # tldr
 brew "thefuck"
 brew "tig"
-brew "tlrc"
 brew "tmux"
 brew "up"
 brew "uv"
