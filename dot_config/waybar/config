@@ -1,0 +1,44 @@
+{
+    "layer": "top",
+    "position": "top",
+    "height": 32,
+    "modules-left": [ "cpu", "memory", "temperature" ],
+    "modules-center": [ "clock" ],
+    "modules-right": [ "pulseaudio", "idle_inhibitor", "tray" ],
+    "tray": {
+        "spacing": 16,
+        "icon-size": 16
+    },
+    "clock": {
+        "format": "{:%a %b %d  %H:%M:%S}",
+        "interval": 1
+    },
+    "cpu": {
+        "format": "  {usage}%"
+    },
+    "memory": {
+        "format": "  {}%"
+    },
+    "temperature": {
+        "format": " {temperatureC}°C"
+    },
+    "pulseaudio": {
+        "scroll-step": 1,
+        "format": "{icon} {volume}%",
+        "format-bluetooth": "{volume}% {icon}",
+        "format-muted": "",
+        "format-icons": {
+            "headphones": " ",
+            "headset": " ",
+            "default": ["", " "]
+        },
+        "on-click": "pavucontrol"
+    },
+    "idle_inhibitor": {
+        "format": "{icon}",
+        "format-icons": {
+            "activated": " ",
+            "deactivated": " "
+        }
+    }
+}

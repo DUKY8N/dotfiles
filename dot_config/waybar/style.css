@@ -1,0 +1,18 @@
+@import "mocha.css";
+
+* {
+  font-family: "Iosevka Nerd Font";
+  font-size: 16px;
+  min-height: 0;
+  border: none;
+  border-radius: 0;
+}
+
+#waybar {
+  background-color: transparent;
+  color: @text;
+}
+
+#waybar .module {
+    margin: 0 8px;
+}
