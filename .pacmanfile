@@ -1,6 +1,4 @@
 7zip
-adobe-source-han-sans-kr-fonts
-adobe-source-han-serif-kr-fonts
 base
 base-devel
 bat
@@ -36,10 +34,8 @@ sudo
 thefuck
 tldr
 tmux
-ttc-iosevka
-ttf-iosevka-nerd
-ttf-nerd-fonts-symbols
-ttf-sarasa-gothic
+tree-sitter
+tree-sitter-cli
 unzip
 uv
 vivid
@@ -48,3 +44,12 @@ yazi
 yt-dlp
 zoxide
 zsh
+
+adobe-source-han-sans-kr-fonts
+adobe-source-han-serif-kr-fonts
+ttc-iosevka
+ttf-iosevka-nerd
+ttf-nerd-fonts-symbols
+ttf-sarasa-gothic
+ghostty
+rofi
