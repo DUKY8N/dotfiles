@@ -45,11 +45,13 @@ yt-dlp
 zoxide
 zsh
 
+ghostty
+papirus-icon-theme
+rofi
+
 adobe-source-han-sans-kr-fonts
 adobe-source-han-serif-kr-fonts
 ttc-iosevka
 ttf-iosevka-nerd
 ttf-nerd-fonts-symbols
 ttf-sarasa-gothic
-ghostty
-rofi
