@@ -1,4 +1,5 @@
 prefer-no-csd
+spawn-at-startup "waybar"
 
 input {
     focus-follows-mouse
@@ -40,15 +41,9 @@ layout {
         inactive-color "#00000033"
     }
 
-    struts {
-        // left 64
-        // right 64
-        // top 64
-        // bottom 64
-    }
+    struts { top -10; }
 }
 
-spawn-at-startup "waybar"
 
 hotkey-overlay { skip-at-startup; }
 
@@ -68,7 +63,7 @@ binds {
     Mod+Shift+Slash { show-hotkey-overlay; }
 
     Mod+Return hotkey-overlay-title="Open a Terminal: ghostty" { spawn "ghostty"; }
-    Mod+Space hotkey-overlay-title="Run an Application: fuzzel" { spawn "fuzzel"; }
+    Mod+Space hotkey-overlay-title="Run an Application: rofi" { spawn "rofi" "-show" "run"; }
     Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }
 
     XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+ -l 1.0"; }
