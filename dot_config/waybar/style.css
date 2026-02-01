@@ -16,3 +16,70 @@
 #waybar .module {
     margin: 0 8px;
 }
+
+/* Tooltip + calendar (Catppuccin Mocha) */
+tooltip {
+  background: @base;
+  color: @text;
+  border: 1px solid @surface1;
+  border-radius: 10px;
+  padding: 8px 10px;
+  font-family: "Iosevka Nerd Font";
+}
+
+tooltip * {
+  color: @text;
+}
+
+calendar {
+  background: @base;
+  color: @text;
+  border-radius: 8px;
+  padding: 6px;
+}
+
+calendar.header {
+  color: @lavender;
+  font-weight: 700;
+}
+
+calendar.button {
+  color: @blue;
+  background: transparent;
+  border-radius: 6px;
+  padding: 2px 6px;
+}
+
+calendar.button:hover {
+  background: @surface0;
+}
+
+calendar.highlight {
+  color: @peach;
+  font-weight: 700;
+}
+
+calendar:indeterminate {
+  color: @overlay1;
+}
+
+calendar:selected {
+  background: @surface1;
+  color: @mauve;
+  border-radius: 6px;
+}
+
+calendar .day-name {
+  color: @yellow;
+  font-weight: 700;
+}
+
+calendar .week-number {
+  color: @teal;
+}
+
+calendar .today {
+  color: @pink;
+  text-decoration: underline;
+  font-weight: 700;
+}
