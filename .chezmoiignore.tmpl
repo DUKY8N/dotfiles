@@ -13,6 +13,11 @@ README.md
 .hammerspoon/
 {{- end }}
 
+{{ if ne .chezmoi.os "linux" -}}
+# Linux specific files - ignore on non-Linux systems
+.local/share/applications/
+{{- end }}
+
 {{ if ne .chezmoi.os "windows" -}}
 # Windows specific files - ignore on non-Windows systems
 Documents/
