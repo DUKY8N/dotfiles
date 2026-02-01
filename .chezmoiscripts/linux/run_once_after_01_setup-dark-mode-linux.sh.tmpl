@@ -1,0 +1,9 @@
+{{ if eq .chezmoi.os "linux" -}}
+#!/usr/bin/env bash
+
+if ! command -v dconf >/dev/null 2>&1; then
+  exit 1
+fi
+
+dconf write /org/gnome/desktop/interface/color-scheme "'prefer-dark'"
+{{- end }}

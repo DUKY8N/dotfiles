@@ -1,6 +1,11 @@
 {{ if eq .chezmoi.os "linux" -}}
 #!/usr/bin/env bash
 
-printf "\nSyncing Pacman packages...\n"
-sudo pacman -Syu --needed - < "{{ .chezmoi.sourceDir }}/.pacmanfile"
+cd ~
+sudo pacman -S --needed --noconfirm git base-devel
+mkdir -p temp
+cd temp
+git clone https://aur.archlinux.org/yay.git
+cd yay
+makepkg -si --noconfirm
 {{- end }}

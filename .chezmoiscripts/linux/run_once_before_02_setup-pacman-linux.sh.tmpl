@@ -1,0 +1,6 @@
+{{ if eq .chezmoi.os "linux" -}}
+#!/usr/bin/env bash
+
+printf "\nSyncing Pacman packages...\n"
+sudo pacman -Syu --needed - < "{{ .chezmoi.sourceDir }}/.pacmanfile"
+{{- end }}
