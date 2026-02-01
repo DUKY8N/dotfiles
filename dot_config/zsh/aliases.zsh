@@ -14,9 +14,6 @@ alias ....=../../..
 alias .....=../../../..
 alias ......=../../../../..
 
-# tldr alias
-alias tldr='LANG=ko tldr'
-
 # fix nfd to ndc alias
 alias fxkr="convmv -r -f utf8 -t utf8 --nfc --notest"
 

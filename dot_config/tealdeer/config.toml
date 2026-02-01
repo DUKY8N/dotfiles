@@ -1,0 +1,7 @@
+[search]
+languages = ["ko", "en"]
+
+[updates]
+auto_update = true
+auto_update_interval_hours = 48
+download_languages = ["ko", "en"]
