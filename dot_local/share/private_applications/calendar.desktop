@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=Google Calendar
+Exec=chromium --app=https://calendar.google.com/
+Type=Application
+Icon=calendar

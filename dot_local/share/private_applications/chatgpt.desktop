@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=ChatGPT
+Exec=chromium --app=https://chat.openai.com
+Type=Application
+Icon=polari

@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=DevDocs
+Exec=chromium --app=https://devdocs.io/
+Type=Application
+Icon=devdocs
