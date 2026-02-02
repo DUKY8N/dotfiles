@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=Monkeytype
+Exec=chromium --app=https://monkeytype.com/
+Type=Application
+Icon=keyboard

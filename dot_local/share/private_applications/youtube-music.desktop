@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=YouTube Music
+Exec=chromium --app=https://music.youtube.com/
+Type=Application
+Icon=youtube-music

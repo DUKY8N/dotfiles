@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=Toss Invest
+Exec=chromium --app=https://tossinvest.com/?market=us
+Type=Application
+Icon=money-manager-ex

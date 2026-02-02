@@ -1,0 +1,4 @@
+[Desktop Entry]
+Name=Moodist
+Exec=chromium --app=https://moodist.mvze.net/
+Icon=speaker
