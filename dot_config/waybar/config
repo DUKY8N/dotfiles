@@ -47,13 +47,13 @@
         "scroll-step": 1,
         "format": "{icon} {volume}%",
         "format-bluetooth": "{volume}% {icon}",
-        "format-muted": "",
+        "format-muted": " muted",
         "format-icons": {
             "headphones": " ",
             "headset": " ",
             "default": ["", " "]
         },
-        "on-click": "pavucontrol"
+        "on-click": "wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle"
     },
     "idle_inhibitor": {
         "format": "{icon}",
@@ -70,6 +70,8 @@
         "tooltip": false,
         "on-click": "playerctl --player=chromium play-pause",
         "on-click-right": "playerctl --player=chromium next",
-        "on-click-middle": "playerctl --player=chromium previous"
+        "on-click-middle": "playerctl --player=chromium previous",
+        "on-scroll-up": "~/.config/waybar/scripts/chromium-media.sh volume up",
+        "on-scroll-down": "~/.config/waybar/scripts/chromium-media.sh volume down"
     }
 }
