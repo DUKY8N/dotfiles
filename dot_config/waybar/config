@@ -4,7 +4,7 @@
     "height": 32,
     "modules-left": [ "cpu", "memory", "temperature" ],
     "modules-center": [ "clock" ],
-    "modules-right": [ "pulseaudio", "idle_inhibitor", "tray" ],
+    "modules-right": [ "pulseaudio", "custom/chromium_playpause", "idle_inhibitor", "tray" ],
     "tray": {
         "spacing": 16,
         "icon-size": 16
@@ -61,5 +61,15 @@
             "activated": " ",
             "deactivated": " "
         }
+    },
+    "custom/chromium_playpause": {
+        "exec": "~/.config/waybar/scripts/chromium-media.sh",
+        "interval": 1,
+        "return-type": "text",
+        "max-length": 40,
+        "tooltip": false,
+        "on-click": "playerctl --player=chromium play-pause",
+        "on-click-right": "playerctl --player=chromium next",
+        "on-click-middle": "playerctl --player=chromium previous"
     }
 }
