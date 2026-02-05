@@ -57,6 +57,7 @@ killall caffeinate
 
 1. Install Arch Linux using `archinstall`
 
+```
 - Bootloader > Systemd-boot
 - Kernels > linux
 - Profile > Profiles: Niri(polkit), Greeter: ly
@@ -65,6 +66,7 @@ killall caffeinate
 - Additional packages > base-devel, chezmoi, chromium, fcitx5-hangul, fcitx5-im, neovim
 - Timezone > Asia/Seoul
 - Automatic time sync (NTP) > Enabled
+```
 
 2. Setup dotfiles with Chezmoi
 
