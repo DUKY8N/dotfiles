@@ -7,14 +7,15 @@
 </p>
 <p align="center">
   <img src="https://badgen.net/badge/dotfiles/chezmoi/green" alt="chezmoi badge" />
-  <img src="https://img.shields.io/badge/OS-macOS-lightgrey?&logoColor=white" alt="macOS badge" />
-  <img src="https://img.shields.io/badge/OS-Windows-blue?&logoColor=white" alt="Windows badge" />
+  <img src="https://img.shields.io/badge/macOS-000000?logo=apple&logoColor=white" alt="macOS badge" />
+  <img src="https://img.shields.io/badge/Arch%20Linux-1793D1?logo=arch-linux&logoColor=white" alt="Arch Linux badge" />
+  <img src="https://img.shields.io/badge/Windows-0078D6" alt="Windows badge" />
 </p>
 
 # dotfiles
 
 A cross-platform dotfiles setup managed with chezmoi and optimized for a modern terminal environment.</br>
-Supports macOS and Windows (via WSL) with seamless configuration across different systems.</br>
+Supports macOS, Arch Linux, and Windows (via WSL) with seamless configuration across different systems.</br>
 
 Can be set up from a clean system with no prior installations.
 
@@ -45,6 +46,39 @@ sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply DUKY8N
 
 ```bash
 killall caffeinate
+```
+
+</br>
+</details>
+
+<details>
+<summary>Linux (Arch) 🐧</summary>
+</br>
+
+1. Install Arch Linux using `archinstall`
+
+- Bootloader > Systemd-boot
+- Kernels > linux
+- Profile > Profiles: Niri(polkit), Greeter: ly
+- Applications > Bluetooth: Enabled, Audio: pipwire
+- Network configuration > Use Network Manager (default backend)
+- Additional packages > base-devel, chezmoi, chromium, fcitx5-hangul, fcitx5-im, neovim
+- Timezone > Asia/Seoul
+- Automatic time sync (NTP) > Enabled
+
+2. Setup dotfiles with Chezmoi
+
+```bash
+chezmoi init --apply DUKY8N
+```
+
+3. Enable Bluetooth AutoEnable
+
+```ini
+/etc/bluetooth/main.conf
+
+[Policy]
+AutoEnable=true
 ```
 
 </br>
@@ -97,19 +131,6 @@ wsl --manage archlinux --set-default-user username
 ```
 
 7. Install and setup dotfiles with Chezmoi (inside Arch Linux)
-
-```bash
-sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply DUKY8N
-```
-
-</br>
-</details>
-
-<details>
-<summary>Linux 🐧</summary>
-</br>
-
-1. Install and setup dotfiles with Chezmoi
 
 ```bash
 sh -c "$(curl -fsLS get.chezmoi.io)" -- init --apply DUKY8N
