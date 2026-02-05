@@ -135,9 +135,9 @@ binds {
 
     Mod+W { toggle-column-tabbed-display; }
 
-    Print { screenshot; }
-    Ctrl+Print { screenshot-screen; }
-    Alt+Print { screenshot-window; }
+    Mod+Shift+1 { screenshot; }
+    Mod+Shift+2 { screenshot-window; }
+    Mod+Shift+3 { screenshot-screen; }
 
     Mod+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
 

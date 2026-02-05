@@ -17,6 +17,16 @@ window-rule {
 }
 
 window-rule {
+    match app-id=r#"^chrome-"#
+
+    focus-ring {
+        width 2
+        active-color "#cba6f7"
+        inactive-color "#cba6f780"
+    }
+}
+
+window-rule {
     match app-id=r#"^chrome-devdocs"#
     match app-id=r#"^chrome-chat\.openai"#
     match app-id=r#"^chrome-music\.youtube"#
@@ -35,9 +45,9 @@ window-rule {
 }
 
 window-rule {
+    match app-id=r#"^chrome-lichess"#
     match app-id=r#"^chrome-monkeytype"#
     match app-id=r#"^chrome-tossinvest"#
-    match app-id=r#"^chrome-lichess"#
 
     open-floating true
     default-column-width { proportion 0.7; }
