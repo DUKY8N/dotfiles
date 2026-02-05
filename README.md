@@ -83,6 +83,14 @@ chezmoi init --apply DUKY8N
 AutoEnable=true
 ```
 
+3. Configure VS Code runtime arguments
+
+```json
+{
+  "password-store": "gnome-libsecret"
+}
+```
+
 </br>
 </details>
 
