@@ -1,0 +1,5 @@
+[Desktop Entry]
+Name=Excalidraw
+Exec=chromium --app=https://excalidraw.com/
+Type=Application
+Icon=excalidraw
