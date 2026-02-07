@@ -63,7 +63,7 @@ killall caffeinate
 - Profile > Profiles: Niri(polkit), Greeter: ly
 - Applications > Bluetooth: Enabled, Audio: pipwire
 - Network configuration > Use Network Manager (default backend)
-- Additional packages > base-devel, chezmoi, chromium, fcitx5-hangul, fcitx5-im, neovim
+- Additional packages > base-devel, chezmoi, chromium, fcitx5-hangul, fcitx5-im, fcitx5-lua, neovim
 - Timezone > Asia/Seoul
 - Automatic time sync (NTP) > Enabled
 ```
@@ -83,7 +83,19 @@ chezmoi init --apply DUKY8N
 AutoEnable=true
 ```
 
-3. Configure VS Code runtime arguments
+4. Configure key remapping with keyd
+
+```ini
+/etc/keyd/default.conf
+
+[ids]
+*
+
+[control]
+leftbrace = esc
+```
+
+5. Configure VS Code runtime arguments
 
 ```json
 {
