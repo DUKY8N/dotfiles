@@ -4,7 +4,18 @@ window-rule {
 }
 
 window-rule {
+    match app-id=r#"^chrome-"#
+
+    focus-ring {
+        width 2
+        active-color "#cba6f7"
+        inactive-color "#cba6f780"
+    }
+}
+
+window-rule {
     match app-id="Raindrop.io"
+    match app-id=r#"^chrome-chat\.openai"#
 
     default-column-width { proportion 0.33333; }
 }
@@ -16,19 +27,9 @@ window-rule {
     open-floating true
 }
 
-window-rule {
-    match app-id=r#"^chrome-"#
-
-    focus-ring {
-        width 2
-        active-color "#cba6f7"
-        inactive-color "#cba6f780"
-    }
-}
 
 window-rule {
     match app-id=r#"^chrome-devdocs"#
-    match app-id=r#"^chrome-chat\.openai"#
     match app-id=r#"^chrome-music\.youtube"#
     match app-id=r#"^chrome-translate\.google"#
     match app-id=r#"^chrome-moodist\.mvze"#

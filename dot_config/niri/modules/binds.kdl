@@ -1,9 +1,16 @@
 binds {
-    Mod+Shift+Slash { show-hotkey-overlay; }
-
-    Mod+Return hotkey-overlay-title="Open a Terminal: ghostty" { spawn "ghostty"; }
     Mod+Space hotkey-overlay-title="Run an Application: rofi" { spawn "rofi" "-show" "drun" "-terminal" "ghostty"; }
-    Super+Alt+L hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }
+    Mod+Return hotkey-overlay-title="Open a Terminal: ghostty" { spawn "ghostty"; }
+
+    Ctrl+Mod+Alt+Shift+8 hotkey-overlay-title=null { spawn "zen-browser"; }
+    Ctrl+Mod+Alt+Shift+9 hotkey-overlay-title=null { spawn "raindrop"; }
+    Ctrl+Mod+Alt+Shift+Comma hotkey-overlay-title=null { spawn "chromium" "--app=https://chat.openai.com"; }
+    Ctrl+Mod+Alt+Shift+Period hotkey-overlay-title=null { spawn "chromium" "--app=https://translate.google.com"; }
+    Ctrl+Mod+Alt+Shift+O hotkey-overlay-title=null { spawn "obsidian"; }
+    Ctrl+Mod+Alt+Shift+Return hotkey-overlay-title=null { spawn "ghostty"; }
+    Ctrl+Mod+Alt+Shift+Space hotkey-overlay-title=null { spawn "rofi" "-show" "drun" "-terminal" "ghostty"; }
+
+    Mod+Shift+Slash { show-hotkey-overlay; }
 
     XF86AudioRaiseVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1+ -l 1.0"; }
     XF86AudioLowerVolume allow-when-locked=true { spawn-sh "wpctl set-volume @DEFAULT_AUDIO_SINK@ 0.1-"; }
@@ -141,6 +148,7 @@ binds {
 
     Mod+Escape allow-inhibiting=false { toggle-keyboard-shortcuts-inhibit; }
 
+    Mod+Backspace hotkey-overlay-title="Lock the Screen: swaylock" { spawn "swaylock"; }
+    Mod+Ctrl+Backspace { power-off-monitors; }
     Mod+Shift+Backspace { quit; }
-    Mod+Backspace { power-off-monitors; }
 }
