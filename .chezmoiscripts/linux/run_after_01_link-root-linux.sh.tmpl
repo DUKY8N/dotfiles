@@ -1,0 +1,63 @@
+{{ if eq .chezmoi.os "linux" -}}
+#!/usr/bin/env bash
+
+set -euo pipefail
+
+SOURCE_DIR="{{ .chezmoi.sourceDir }}"
+ROOT_DIR="$SOURCE_DIR/.root"
+
+if [[ ! -d "$ROOT_DIR" ]]; then
+  exit 0
+fi
+
+next_backup_path() {
+  local target="$1"
+  local date_stamp
+  local idx
+  date_stamp="$(date +%Y%m%d)"
+  idx=1
+
+  while [[ -e "${target}.bak-${date_stamp}-${idx}" ]]; do
+    idx=$((idx + 1))
+  done
+
+  printf '%s' "${target}.bak-${date_stamp}-${idx}"
+}
+
+link_file() {
+  local source="$1"
+  local rel
+  local target
+  local source_real
+  local target_real
+
+  rel="${source#"$ROOT_DIR"/}"
+  target="/$rel"
+
+  if [[ -d "$target" ]]; then
+    return 0
+  fi
+
+  if [[ -L "$target" ]]; then
+    source_real="$(readlink -f "$source")"
+    target_real="$(readlink -f "$target")"
+    if [[ "$source_real" == "$target_real" ]]; then
+      return 0
+    fi
+  fi
+
+  if [[ ! -d "$(dirname "$target")" ]]; then
+    sudo mkdir -p "$(dirname "$target")"
+  fi
+
+  if [[ -e "$target" || -L "$target" ]]; then
+    sudo mv "$target" "$(next_backup_path "$target")"
+  fi
+
+  sudo ln -s "$source" "$target"
+}
+
+while IFS= read -r -d '' path; do
+  link_file "$path"
+done < <(find "$ROOT_DIR" \( -type f -o -type l \) -print0)
+{{- end }}
