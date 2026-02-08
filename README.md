@@ -83,19 +83,7 @@ chezmoi init --apply DUKY8N
 AutoEnable=true
 ```
 
-4. Configure key remapping with keyd
-
-```ini
-/etc/keyd/default.conf
-
-[ids]
-*
-
-[control]
-leftbrace = esc
-```
-
-5. Configure VS Code runtime arguments
+4. Configure VS Code runtime arguments
 
 ```json
 {
