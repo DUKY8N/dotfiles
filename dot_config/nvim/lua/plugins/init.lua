@@ -19,13 +19,10 @@ vim.pack.add({
     { src = 'https://github.com/uga-rosa/translate.nvim' },
 }, { load = true, confirm = false })
 
--- Tool Installer
+-- LSP and Tooling
 require('mason').setup {}
 require('mason-lspconfig').setup {}
 require('mason-tool-installer').setup(require 'plugins.mason-tool-installer')
-
--- Completion
-require('blink.cmp').setup {}
 
 -- Formatting
 require('conform').setup(require 'plugins.conform')
@@ -37,6 +34,10 @@ require('lint').linters_by_ft = {
     proto = { 'buf_lint' },
 }
 
+-- Completion
+require('blink.cmp').setup(require 'plugins.blink-cmp')
+
+-- Other Plugins
 require('telescope').setup(require 'plugins.telescope')
 require('oil').setup {}
 require('mini.pairs').setup {}
