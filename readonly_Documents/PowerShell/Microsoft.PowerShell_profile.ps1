@@ -14,3 +14,5 @@ function y {
 	}
 	Remove-Item -Path $tmp
 }
+
+$env:XDG_CONFIG_HOME = "$HOME\.config"
