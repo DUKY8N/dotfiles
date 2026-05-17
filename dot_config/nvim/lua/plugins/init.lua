@@ -19,6 +19,8 @@ vim.pack.add({
     { src = 'https://github.com/uga-rosa/translate.nvim' },
 }, { load = true, confirm = false })
 
+vim.cmd.colorscheme 'catppuccin-mocha'
+
 -- LSP and Tooling
 require('mason').setup {}
 require('mason-lspconfig').setup {}
@@ -28,11 +30,7 @@ require('mason-tool-installer').setup(require 'plugins.mason-tool-installer')
 require('conform').setup(require 'plugins.conform')
 
 -- Linting
-require('lint').linters_by_ft = {
-    javascript = { 'eslint_d' },
-    sh = { 'shellcheck' },
-    proto = { 'buf_lint' },
-}
+require('lint').linters_by_ft = require 'plugins.nvim-lint'
 
 -- Completion
 require('blink.cmp').setup(require 'plugins.blink-cmp')
@@ -45,5 +43,3 @@ require('nvim-surround').setup {}
 require('which-key').setup(require 'plugins.which-key')
 require('lualine').setup(require 'plugins.lualine')
 require('translate').setup(require 'plugins.translate')
-
-vim.cmd.colorscheme 'catppuccin-mocha'
