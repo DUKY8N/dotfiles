@@ -17,4 +17,4 @@ function y {
 
 $env:XDG_CONFIG_HOME = "$HOME\.config"
 
-echo '(&mise activate pwsh) | Out-String | Invoke-Expression' >> $HOME\Documents\PowerShell\Microsoft.PowerShell_profile.ps1
+(&mise activate pwsh) | Out-String | Invoke-Expression
