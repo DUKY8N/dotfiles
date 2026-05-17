@@ -1,19 +1,11 @@
 return {
-    'uga-rosa/translate.nvim',
-    cmd = { 'Translate' },
-    keys = {
-        { '<leader>te', '<cmd>Translate EN<cr>', mode = { 'n', 'v' }, desc = 'Translate to English' },
-        { '<leader>tk', '<cmd>Translate KO<cr>', mode = { 'n', 'v' }, desc = 'Translate to Korean' },
+    default = {
+        command = 'google',
+        output = 'floating',
     },
-    opts = {
-        default = {
-            command = 'google',
-            output = 'floating',
-        },
-        preset = {
-            output = {
-                floating = {},
-            },
+    preset = {
+        output = {
+            floating = {},
         },
     },
 }
