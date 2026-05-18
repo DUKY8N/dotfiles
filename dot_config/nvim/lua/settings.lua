@@ -1,6 +1,8 @@
 vim.g.mapleader = ' '
 vim.g.maplocalleader = '\\'
 
+vim.g.snacks_animate = false
+
 vim.o.cmdheight = 0
 vim.o.cursorline = true
 vim.o.expandtab = true

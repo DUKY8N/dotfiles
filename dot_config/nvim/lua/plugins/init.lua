@@ -21,6 +21,9 @@ vim.pack.add({
 
 vim.cmd.colorscheme 'catppuccin-mocha'
 
+-- Snacks
+require('snacks').setup(require 'plugins.snacks')
+
 -- LSP and Tooling
 require('mason').setup {}
 require('mason-lspconfig').setup {}
@@ -36,7 +39,6 @@ require('lint').linters_by_ft = require 'plugins.nvim-lint'
 require('blink.cmp').setup(require 'plugins.blink-cmp')
 
 -- Other Plugins
-require('snacks').setup(require 'plugins.snacks')
 require('oil').setup {}
 require('mini.pairs').setup {}
 require('nvim-surround').setup {}
