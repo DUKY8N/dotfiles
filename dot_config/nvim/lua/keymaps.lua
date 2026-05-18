@@ -68,6 +68,15 @@ vim.keymap.set('n', ']d', function()
     vim.diagnostic.jump { count = 1 }
 end, { desc = 'Next diagnostic' })
 
+-- Git
+vim.keymap.set({ "n", "v" }, "<leader>gB", function()
+    Snacks.gitbrowse()
+end, { desc = "Open GitHub in Browser" })
+
+vim.keymap.set("n", "<leader>gg", function()
+  Snacks.lazygit.open()
+end, { desc = "Lazygit 열기" })
+
 -- Translation
 vim.keymap.set({ 'n', 'x' }, '<leader>te', '<cmd>Translate EN<cr>', { desc = 'Translate to English' })
 vim.keymap.set({ 'n', 'x' }, '<leader>tk', '<cmd>Translate KO<cr>', { desc = 'Translate to Korean' })
