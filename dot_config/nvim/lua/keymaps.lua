@@ -81,6 +81,10 @@ end, { desc = "Lazygit 열기" })
 vim.keymap.set({ 'n', 'x' }, '<leader>te', '<cmd>Translate EN<cr>', { desc = 'Translate to English' })
 vim.keymap.set({ 'n', 'x' }, '<leader>tk', '<cmd>Translate KO<cr>', { desc = 'Translate to Korean' })
 
+-- Pi
+vim.keymap.set("n", "<leader>ai", ":PiAsk<CR>", { desc = "Ask pi" })
+vim.keymap.set("v", "<leader>ai", ":PiAskSelection<CR>", { desc = "Ask pi (selection)" })
+
 -- Neovim restart
 vim.keymap.set('n', '<leader>R', function()
     local session = vim.fn.stdpath 'state' .. '/restart_session.vim'

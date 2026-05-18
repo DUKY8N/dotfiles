@@ -13,6 +13,7 @@ vim.pack.add({
     { src = 'https://github.com/nvim-mini/mini.icons' },
     { src = 'https://github.com/nvim-mini/mini.pairs' },
     { src = 'https://github.com/nvim-tree/nvim-web-devicons' },
+    { src = 'https://github.com/pablopunk/pi.nvim' },
     { src = 'https://github.com/saghen/blink.cmp' },
     { src = 'https://github.com/stevearc/conform.nvim' },
     { src = 'https://github.com/stevearc/oil.nvim' },
@@ -39,9 +40,10 @@ require('lint').linters_by_ft = require 'plugins.nvim-lint'
 require('blink.cmp').setup(require 'plugins.blink-cmp')
 
 -- Other Plugins
-require('oil').setup {}
+require('lualine').setup(require 'plugins.lualine')
 require('mini.pairs').setup {}
 require('nvim-surround').setup {}
-require('which-key').setup(require 'plugins.which-key')
-require('lualine').setup(require 'plugins.lualine')
+require('oil').setup {}
+require('pi').setup {}
 require('translate').setup(require 'plugins.translate')
+require('which-key').setup(require 'plugins.which-key')
