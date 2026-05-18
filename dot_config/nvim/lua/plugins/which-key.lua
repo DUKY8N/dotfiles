@@ -3,7 +3,7 @@ return {
     win = {},
     spec = {
         { '<leader>c', group = 'Code' },
-        { '<leader>f', group = 'Telescope' },
+        { '<leader>f', group = 'Find' },
         { '<leader>l', group = 'LSP' },
         { '<leader>t', group = 'Translate' },
 

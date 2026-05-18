@@ -14,16 +14,42 @@ vim.keymap.set('n', '<C-l>', '<C-w>l', { desc = 'Move to right window', remap = 
 -- File explorer
 vim.keymap.set('n', '-', '<cmd>Oil<cr>', { desc = 'Open parent directory' })
 
--- Telescope
-vim.keymap.set('n', '<leader><leader>', '<cmd>Telescope find_files<cr>', { desc = 'Find files' })
-vim.keymap.set('n', '<leader>fb', '<cmd>Telescope buffers<cr>', { desc = 'Find buffers' })
-vim.keymap.set('n', '<leader>fc', '<cmd>Telescope commands<cr>', { desc = 'Commands' })
-vim.keymap.set('n', '<leader>ff', '<cmd>Telescope find_files<cr>', { desc = 'Find files' })
-vim.keymap.set('n', '<leader>fg', '<cmd>Telescope live_grep<cr>', { desc = 'Live grep' })
-vim.keymap.set('n', '<leader>fh', '<cmd>Telescope help_tags<cr>', { desc = 'Help tags' })
-vim.keymap.set('n', '<leader>fk', '<cmd>Telescope keymaps<cr>', { desc = 'Keymaps' })
-vim.keymap.set('n', '<leader>fm', '<cmd>Telescope man_pages<cr>', { desc = 'Man pages' })
-vim.keymap.set('n', '<leader>fr', '<cmd>Telescope registers<cr>', { desc = 'Registers' })
+-- Snacks Picker
+vim.keymap.set('n', '<leader><leader>', function()
+  Snacks.picker.files()
+end, { desc = 'Find files' })
+
+vim.keymap.set('n', '<leader>fb', function()
+  Snacks.picker.buffers()
+end, { desc = 'Find buffers' })
+
+vim.keymap.set('n', '<leader>fc', function()
+  Snacks.picker.commands()
+end, { desc = 'Commands' })
+
+vim.keymap.set('n', '<leader>ff', function()
+  Snacks.picker.files()
+end, { desc = 'Find files' })
+
+vim.keymap.set('n', '<leader>fg', function()
+  Snacks.picker.grep()
+end, { desc = 'Live grep' })
+
+vim.keymap.set('n', '<leader>fh', function()
+  Snacks.picker.help()
+end, { desc = 'Help tags' })
+
+vim.keymap.set('n', '<leader>fk', function()
+  Snacks.picker.keymaps()
+end, { desc = 'Keymaps' })
+
+vim.keymap.set('n', '<leader>fm', function()
+  Snacks.picker.man()
+end, { desc = 'Man pages' })
+
+vim.keymap.set('n', '<leader>fr', function()
+  Snacks.picker.registers()
+end, { desc = 'Registers' })
 
 -- Code
 vim.keymap.set('n', '<leader>cd', vim.diagnostic.open_float, { desc = 'Line diagnostic' })
