@@ -1,5 +1,13 @@
 {
     "agent_buffer_font_size": 16.0,
+    "agent_servers": {
+        "opencode": {
+            "type": "registry"
+        },
+        "pi-acp": {
+            "type": "registry"
+        }
+    },
     "agent_ui_font_size": 18.0,
     "buffer_font_fallbacks": ["Symbols Nerd Font"],
     "buffer_font_family": "Sarasa Mono K",
@@ -11,16 +19,14 @@
         "copilot": {
             "enable_next_edit_suggestions": true,
         },
-    },
-    "features": {
-        "edit_prediction_provider": "copilot",
+        "provider": "copilot",
     },
     "hard_tabs": false,
     "icon_theme": "Catppuccin Mocha",
     "languages": {
         "JavaScript": { "tab_size": 2 },
-        "TypeScript": { "tab_size": 2 },
         "TSX": { "tab_size": 2 },
+        "TypeScript": { "tab_size": 2 },
     },
     "project_panel": {
         "entry_spacing": "standard",
@@ -32,9 +38,9 @@
         "metrics": false,
     },
     "theme": {
-        "mode": "dark",
-        "light": "One Light",
         "dark": "Catppuccin Mocha",
+        "light": "One Light",
+        "mode": "dark",
     },
     "toolbar": {
         "breadcrumbs": false,
