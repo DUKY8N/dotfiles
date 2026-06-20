@@ -64,10 +64,6 @@
       "rev": "ad9ede6a9cddf16cedbd31b8932d6dcdee9b716e",
       "src": "https://github.com/folke/snacks.nvim"
     },
-    "telescope.nvim": {
-      "rev": "7d324792b7943e4aa16ad007212e6acc6f9fe335",
-      "src": "https://github.com/nvim-telescope/telescope.nvim"
-    },
     "translate.nvim": {
       "rev": "1a841e56407ba02e919ed9af573dbe531404aebb",
       "src": "https://github.com/uga-rosa/translate.nvim"
