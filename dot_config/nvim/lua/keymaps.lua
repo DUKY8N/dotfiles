@@ -15,41 +15,21 @@ vim.keymap.set('n', '<C-l>', '<C-w>l', { desc = 'Move to right window', remap = 
 vim.keymap.set('n', '-', '<cmd>Oil<cr>', { desc = 'Open parent directory' })
 
 -- Snacks Picker
-vim.keymap.set('n', '<leader><leader>', function()
-  Snacks.picker.files()
-end, { desc = 'Find files' })
-
-vim.keymap.set('n', '<leader>fb', function()
-  Snacks.picker.buffers()
-end, { desc = 'Find buffers' })
-
-vim.keymap.set('n', '<leader>fc', function()
-  Snacks.picker.commands()
-end, { desc = 'Commands' })
-
-vim.keymap.set('n', '<leader>ff', function()
-  Snacks.picker.files()
-end, { desc = 'Find files' })
-
-vim.keymap.set('n', '<leader>fg', function()
-  Snacks.picker.grep()
-end, { desc = 'Live grep' })
-
-vim.keymap.set('n', '<leader>fh', function()
-  Snacks.picker.help()
-end, { desc = 'Help tags' })
-
-vim.keymap.set('n', '<leader>fk', function()
-  Snacks.picker.keymaps()
-end, { desc = 'Keymaps' })
-
-vim.keymap.set('n', '<leader>fm', function()
-  Snacks.picker.man()
-end, { desc = 'Man pages' })
-
-vim.keymap.set('n', '<leader>fr', function()
-  Snacks.picker.registers()
-end, { desc = 'Registers' })
+for _, binding in ipairs {
+    { key = '<leader><leader>', picker = 'files', desc = 'Find files' },
+    { key = '<leader>fb', picker = 'buffers', desc = 'Find buffers' },
+    { key = '<leader>fc', picker = 'commands', desc = 'Commands' },
+    { key = '<leader>ff', picker = 'files', desc = 'Find files' },
+    { key = '<leader>fg', picker = 'grep', desc = 'Live grep' },
+    { key = '<leader>fh', picker = 'help', desc = 'Help tags' },
+    { key = '<leader>fk', picker = 'keymaps', desc = 'Keymaps' },
+    { key = '<leader>fm', picker = 'man', desc = 'Man pages' },
+    { key = '<leader>fr', picker = 'registers', desc = 'Registers' },
+} do
+    vim.keymap.set('n', binding.key, function()
+        Snacks.picker[binding.picker]()
+    end, { desc = binding.desc })
+end
 
 -- Code
 vim.keymap.set('n', '<leader>cd', vim.diagnostic.open_float, { desc = 'Line diagnostic' })
@@ -69,21 +49,21 @@ vim.keymap.set('n', ']d', function()
 end, { desc = 'Next diagnostic' })
 
 -- Git
-vim.keymap.set({ "n", "v" }, "<leader>gB", function()
+vim.keymap.set({ 'n', 'v' }, '<leader>gB', function()
     Snacks.gitbrowse()
-end, { desc = "Open GitHub in Browser" })
+end, { desc = 'Open GitHub in Browser' })
 
-vim.keymap.set("n", "<leader>gg", function()
-  Snacks.lazygit.open()
-end, { desc = "Lazygit 열기" })
+vim.keymap.set('n', '<leader>gg', function()
+    Snacks.lazygit.open()
+end, { desc = 'Lazygit 열기' })
 
 -- Translation
 vim.keymap.set({ 'n', 'x' }, '<leader>te', '<cmd>Translate EN<cr>', { desc = 'Translate to English' })
 vim.keymap.set({ 'n', 'x' }, '<leader>tk', '<cmd>Translate KO<cr>', { desc = 'Translate to Korean' })
 
 -- Pi
-vim.keymap.set("n", "<leader>ai", ":PiAsk<CR>", { desc = "Ask pi" })
-vim.keymap.set("v", "<leader>ai", ":PiAskSelection<CR>", { desc = "Ask pi (selection)" })
+vim.keymap.set('n', '<leader>ai', '<cmd>PiAsk<cr>', { desc = 'Ask pi' })
+vim.keymap.set('v', '<leader>ai', '<cmd>PiAskSelection<cr>', { desc = 'Ask pi (selection)' })
 
 -- Neovim restart
 vim.keymap.set('n', '<leader>R', function()
