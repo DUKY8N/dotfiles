@@ -1,5 +1,3 @@
-#!/bin/zsh
-
 # vivid (themes)
 export LS_COLORS="$(vivid generate catppuccin-mocha)"
 

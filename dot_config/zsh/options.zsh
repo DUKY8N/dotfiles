@@ -1,5 +1,3 @@
-#!/bin/zsh
-
 # history behaviour
 setopt histverify histignoredups histexpiredupsfirst histignorespace sharehistory extendedhistory
 
