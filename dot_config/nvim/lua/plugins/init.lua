@@ -7,7 +7,6 @@ vim.pack.add({
     { src = 'https://github.com/mason-org/mason.nvim' },
     { src = 'https://github.com/mfussenegger/nvim-lint' },
     { src = 'https://github.com/neovim/nvim-lspconfig' },
-    { src = 'https://github.com/nvim-lualine/lualine.nvim' },
     { src = 'https://github.com/nvim-mini/mini.icons' },
     { src = 'https://github.com/nvim-mini/mini.pairs' },
     { src = 'https://github.com/pablopunk/pi.nvim' },
@@ -35,7 +34,6 @@ require('lint').linters_by_ft = require 'plugins.nvim-lint'
 require('blink.cmp').setup(require 'plugins.blink-cmp')
 
 -- Other Plugins
-require('lualine').setup(require 'plugins.lualine')
 require('mini.pairs').setup {}
 require('nvim-surround').setup {}
 require('oil').setup {}
