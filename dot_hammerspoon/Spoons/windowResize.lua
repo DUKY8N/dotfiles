@@ -1,342 +1,215 @@
---------------------------
--- Configuration & State
---------------------------
+-- Configuration
 local config = {
     mod = { 'ctrl', 'alt' },
-    resizeMod = { 'shift', 'ctrl', 'alt' }, -- 크기 조절용 수식 키
+    resizeMod = { 'shift', 'ctrl', 'alt' },
     animationDuration = 0.125,
-    moveStep = 100,                         -- 픽셀 단위 이동 거리
-    resizeStep = 50,                        -- 픽셀 단위 크기 조절
-    resizeFactors = {
-        increase = 1.1,                     -- 10% 증가
-        decrease = 0.9,                     -- 10% 감소
-    },
-    tolerance = 0.01,                       -- 픽셀 완벽 정렬을 위한 허용 오차
-    cycleTimeout = 0.5,                     -- 빠른 재클릭 감지 시간 (초)
+    moveStep = 100, -- 이동 거리 (포인트)
+    resizeStep = 50, -- 중심 기준 한쪽 가장자리 이동량 (포인트)
+    resizeFactors = { increase = 1.1, decrease = 0.9 },
+    tolerance = 0.01, -- 레이아웃 판정 허용 오차 (화면 비율)
+    cycleTimeout = 0.5, -- 연속 입력 판정 시간 (초)
 }
 
-local lastCycle = { time = 0 } -- {key, time, index}
+local lastCycle -- {windowID, key, time, index}
 
---------------------------
--- Base Utility Functions
---------------------------
-local function isWithinTolerance(value1, value2)
-    return math.abs(value1 - value2) < config.tolerance
+-- Frame geometry
+local function clamp(value, lower, upper)
+    return math.min(upper, math.max(lower, value))
 end
 
-local function withFocusedWindow(fn)
-    local win = hs.window.focusedWindow()
-    if win then
-        return fn(win)
-    end
-end
-
--- 반복 키 바인딩을 위한 헬퍼 함수
-local function bindRepeatKey(mod, key, fn)
-    hs.hotkey.bind(mod, key, fn, nil, fn)
-end
-
---------------------------
--- Screen Utility Functions
---------------------------
 local function constrainFrameToScreen(frame, screen)
-    local w = math.min(screen.w, frame.w)
-    local h = math.min(screen.h, frame.h)
+    local w = clamp(frame.w, 1, screen.w)
+    local h = clamp(frame.h, 1, screen.h)
     return {
+        x = clamp(frame.x, screen.x, screen.x + screen.w - w),
+        y = clamp(frame.y, screen.y, screen.y + screen.h - h),
         w = w,
         h = h,
-        x = math.max(screen.x, math.min(screen.x + screen.w - w, frame.x)),
-        y = math.max(screen.y, math.min(screen.y + screen.h - h, frame.y)),
     }
 end
 
---------------------------
--- Core Window Functions
---------------------------
-
--- 프레임 계산을 위한 헬퍼 함수
-local function calculateFrame(screen, x, y, w, h)
-    local frame = {
-        x = screen.x + math.floor(screen.w * x),
-        y = screen.y + math.floor(screen.h * y),
-        w = math.floor(screen.w * w),
-        h = math.floor(screen.h * h),
+local function calculateFrame(screen, layout)
+    local x, y, w, h = table.unpack(layout)
+    -- 인접한 레이아웃이 같은 경계를 공유하도록 끝 좌표에서 크기를 계산
+    local left = math.floor(screen.w * x)
+    local top = math.floor(screen.h * y)
+    local right = math.floor(screen.w * (x + w))
+    local bottom = math.floor(screen.h * (y + h))
+    return {
+        x = screen.x + left,
+        y = screen.y + top,
+        w = right - left,
+        h = bottom - top,
     }
-
-    -- 화면 끝까지 차지해야 할 때 픽셀 완벽 정렬
-    if isWithinTolerance(x + w, 1.0) then
-        frame.w = screen.x + screen.w - frame.x
-    end
-
-    if isWithinTolerance(y + h, 1.0) then
-        frame.h = screen.y + screen.h - frame.y
-    end
-
-    return frame
 end
 
-local function setWindowPosition(x, y, w, h)
-    withFocusedWindow(function(win)
-        local screen = win:screen():frame()
-        local newFrame = calculateFrame(screen, x, y, w, h)
-        win:setFrame(newFrame, config.animationDuration)
-    end)
+local function matchesFrame(frame, expected, screen)
+    local horizontalTolerance = screen.w * config.tolerance
+    local verticalTolerance = screen.h * config.tolerance
+    return math.abs(frame.x - expected.x) < horizontalTolerance
+        and math.abs(frame.y - expected.y) < verticalTolerance
+        and math.abs(frame.w - expected.w) < horizontalTolerance
+        and math.abs(frame.h - expected.h) < verticalTolerance
 end
 
-local function moveWindow(dx, dy)
-    withFocusedWindow(function(win)
+-- Window operations (the focused window is resolved once by bind)
+local function resizeWindowCentered(win, frame, widthChange, heightChange)
+    local screen = win:screen():frame()
+    -- 크기를 먼저 제한하고 실제 변화량을 기준으로 중심점을 유지
+    local w = clamp(frame.w + widthChange, 1, screen.w)
+    local h = clamp(frame.h + heightChange, 1, screen.h)
+    local newFrame = {
+        x = frame.x + (frame.w - w) / 2,
+        y = frame.y + (frame.h - h) / 2,
+        w = w,
+        h = h,
+    }
+    win:setFrame(constrainFrameToScreen(newFrame, screen), config.animationDuration)
+end
+
+local function cycleWindowSize(win, key, layouts)
+    local now = hs.timer.absoluteTime() / 1e9
+    local windowID = win:id()
+    local screen = win:screen():frame()
+    local currentIndex = 0
+
+    if
+        lastCycle
+        and lastCycle.windowID == windowID
+        and lastCycle.key == key
+        and (now - lastCycle.time) <= config.cycleTimeout
+    then
+        currentIndex = lastCycle.index
+    else
         local frame = win:frame()
-        local screen = win:screen():frame()
-
-        local newFrame = {
-            x = frame.x + dx * config.moveStep,
-            y = frame.y + dy * config.moveStep,
-            w = frame.w,
-            h = frame.h,
-        }
-
-        win:setFrame(constrainFrameToScreen(newFrame, screen), config.animationDuration)
-    end)
-end
-
-local function moveToScreen(direction)
-    withFocusedWindow(function(win)
-        local targetScreen = direction == 'next' and win:screen():next() or win:screen():previous()
-        win:moveToScreen(targetScreen, false, true, config.animationDuration)
-    end)
-end
-
--- 중심점 기준 크기 조절 공통 함수
-local function resizeWindowCentered(widthChange, heightChange)
-    withFocusedWindow(function(win)
-        local frame = win:frame()
-        local screen = win:screen():frame()
-        local newFrame = {
-            w = frame.w + widthChange,
-            h = frame.h + heightChange,
-            x = frame.x - widthChange / 2,
-            y = frame.y - heightChange / 2,
-        }
-        win:setFrame(constrainFrameToScreen(newFrame, screen), config.animationDuration)
-    end)
-end
-
-local function resizeByDirection(dw, dh)
-    resizeWindowCentered(dw * config.resizeStep * 2, dh * config.resizeStep * 2)
-end
-
-local function resizeByPercent(factor)
-    withFocusedWindow(function(win)
-        local frame = win:frame()
-        resizeWindowCentered(frame.w * (factor - 1), frame.h * (factor - 1))
-    end)
-end
-
-local function cycleWindowSize(key, layouts)
-    withFocusedWindow(function(win)
-        local now = hs.timer.secondsSinceEpoch()
-        local layoutCount = #layouts
-        local layoutIndex
-
-        -- 빠른 재클릭: 이전 인덱스에서 계속
-        if lastCycle.key == key and (now - lastCycle.time) <= config.cycleTimeout then
-            layoutIndex = (lastCycle.index % layoutCount) + 1
-        else
-            -- 현재 창 상태 감지
-            local frame = win:frame()
-            local screen = win:screen():frame()
-            local normalizedX = (frame.x - screen.x) / screen.w
-            local normalizedWidth = frame.w / screen.w
-
-            layoutIndex = 1 -- 기본값
-            for i, layout in ipairs(layouts) do
-                if isWithinTolerance(normalizedX, layout.x) and isWithinTolerance(normalizedWidth, layout.w) then
-                    layoutIndex = (i % layoutCount) + 1
-                    break
-                end
+        for i, layout in ipairs(layouts) do
+            if matchesFrame(frame, calculateFrame(screen, layout), screen) then
+                currentIndex = i
+                break
             end
         end
+    end
 
-        local layout = layouts[layoutIndex]
-        setWindowPosition(layout.x, layout.y, layout.w, layout.h)
+    local index = (currentIndex % #layouts) + 1
+    win:setFrame(calculateFrame(screen, layouts[index]), config.animationDuration)
+    lastCycle = { windowID = windowID, key = key, time = now, index = index }
+end
 
-        lastCycle.key = key
-        lastCycle.time = now
-        lastCycle.index = layoutIndex
+-- Key bindings: focus lookup, cycle reset, and key repeat are handled here.
+local function bind(key, fn, options)
+    options = options or {}
+    local function run()
+        if not options.isCycle then
+            lastCycle = nil
+        end
+        local win = hs.window.focusedWindow()
+        if win then
+            fn(win)
+        end
+    end
+    hs.hotkey.bind(options.mod or config.mod, key, run, nil, options.repeatable and run or nil)
+end
+
+-- Layouts use {x, y, w, h} relative to the usable screen frame.
+for key, layouts in pairs {
+    h = {
+        { 0, 0, 0.5, 1 },
+        { 0, 0, 0.33, 1 },
+        { 0, 0, 0.67, 1 },
+    },
+    l = {
+        { 0.5, 0, 0.5, 1 },
+        { 0.67, 0, 0.33, 1 },
+        { 0.33, 0, 0.67, 1 },
+    },
+} do
+    bind(key, function(win)
+        cycleWindowSize(win, key, layouts)
+    end, { isCycle = true })
+end
+
+for key, layout in pairs {
+    -- Halves
+    k = { 0, 0, 1, 0.5 },
+    j = { 0, 0.5, 1, 0.5 },
+    -- Quarters
+    u = { 0, 0, 0.5, 0.5 },
+    i = { 0.5, 0, 0.5, 0.5 },
+    m = { 0, 0.5, 0.5, 0.5 },
+    [','] = { 0.5, 0.5, 0.5, 0.5 },
+    -- Thirds
+    ['7'] = { 0, 0, 0.33, 1 },
+    ['8'] = { 0.33, 0, 0.34, 1 },
+    ['9'] = { 0.67, 0, 0.33, 1 },
+    -- Centered
+    ['\\'] = { 0.1, 0.1, 0.8, 0.8 },
+    delete = { 0.2, 0.2, 0.6, 0.6 },
+} do
+    bind(key, function(win)
+        win:setFrame(calculateFrame(win:screen():frame(), layout), config.animationDuration)
     end)
 end
 
--- Control actions table
-local controlActions = {
-    maximize = function(win)
-        win:maximize(config.animationDuration)
-    end,
-
-    minimize = function(win)
-        win:minimize()
-    end,
-
-    center = function(win)
+-- Movement
+for key, direction in pairs { left = { -1, 0 }, right = { 1, 0 }, up = { 0, -1 }, down = { 0, 1 } } do
+    bind(key, function(win)
         local frame = win:frame()
         local screen = win:screen():frame()
-        frame.x = screen.x + (screen.w - frame.w) / 2
-        frame.y = screen.y + (screen.h - frame.h) / 2
-        win:setFrame(frame, config.animationDuration)
-    end,
-}
-
---------------------------
--- Factory Functions for Operations
---------------------------
-local function cycle(key, layouts)
-    local layoutsWithDesc = {}
-    for _, layout in ipairs(layouts) do
-        table.insert(layoutsWithDesc, {
-            x = layout[1],
-            y = layout[2],
-            w = layout[3],
-            h = layout[4],
-        })
-    end
-    return {
-        key = key,
-        mod = config.mod,
-        run = function()
-            cycleWindowSize(key, layoutsWithDesc)
-        end,
-    }
+        frame.x = frame.x + direction[1] * config.moveStep
+        frame.y = frame.y + direction[2] * config.moveStep
+        win:setFrame(constrainFrameToScreen(frame, screen), config.animationDuration)
+    end, { repeatable = true })
 end
 
-local function layout(key, x, y, w, h)
-    return {
-        key = key,
-        mod = config.mod,
-        run = function()
-            setWindowPosition(x, y, w, h)
-        end,
-    }
+-- Centered resizing
+for key, direction in pairs { h = { -1, 0 }, l = { 1, 0 }, k = { 0, -1 }, j = { 0, 1 } } do
+    bind(key, function(win)
+        resizeWindowCentered(
+            win,
+            win:frame(),
+            direction[1] * config.resizeStep * 2,
+            direction[2] * config.resizeStep * 2
+        )
+    end, { mod = config.resizeMod, repeatable = true })
 end
 
-local function move(key, dx, dy)
-    return {
-        key = key,
-        mod = config.mod,
-        repeatable = true,
-        run = function()
-            moveWindow(dx, dy)
-        end,
-    }
+for key, factor in pairs { ['='] = config.resizeFactors.increase, ['-'] = config.resizeFactors.decrease } do
+    bind(key, function(win)
+        local frame = win:frame()
+        resizeWindowCentered(win, frame, frame.w * (factor - 1), frame.h * (factor - 1))
+    end, { repeatable = true })
 end
 
-local function resize(key, dw, dh)
-    return {
-        key = key,
-        mod = config.resizeMod,
-        repeatable = true,
-        run = function()
-            resizeByDirection(dw, dh)
-        end,
-    }
+-- Screens
+for key, direction in pairs { ['['] = 'previous', [']'] = 'next' } do
+    bind(key, function(win)
+        local screen = win:screen()
+        local target = direction == 'next' and screen:next() or screen:previous()
+        win:moveToScreen(target, false, true, config.animationDuration)
+    end)
 end
 
-local function scale(key, factor)
-    return {
-        key = key,
-        mod = config.mod,
-        repeatable = true,
-        run = function()
-            resizeByPercent(factor)
-        end,
-    }
-end
+-- Controls
+bind('return', function(win)
+    win:maximize(config.animationDuration)
+end)
 
-local function screen(key, direction)
-    return {
-        key = key,
-        mod = config.mod,
-        run = function()
-            moveToScreen(direction)
-        end,
-    }
-end
+bind('0', function(win)
+    win:minimize()
+end)
 
-local function control(key, action)
-    return {
-        key = key,
-        mod = config.mod,
-        run = function()
-            local handler = controlActions[action]
-            if handler then
-                withFocusedWindow(handler)
-            end
-        end,
-    }
-end
+bind('space', function(win)
+    local frame = win:frame()
+    frame.center = win:screen():frame().center
+    win:setFrame(frame, config.animationDuration)
+end)
 
---------------------------
--- Unified Window Operations Table
---------------------------
-local windowOps = {
-    cycle('h', {
-        { 0, 0, 0.5,  1 },
-        { 0, 0, 0.33, 1 },
-        { 0, 0, 0.67, 1 },
-    }),
-    cycle('l', {
-        { 0.5,  0, 0.5,  1 },
-        { 0.67, 0, 0.33, 1 },
-        { 0.33, 0, 0.67, 1 },
-    }),
-
-    -- Halves
-    layout('k', 0, 0, 1, 0.5),
-    layout('j', 0, 0.5, 1, 0.5),
-
-    -- Quarters
-    layout('u', 0, 0, 0.5, 0.5),
-    layout('i', 0.5, 0, 0.5, 0.5),
-    layout('m', 0, 0.5, 0.5, 0.5),
-    layout(',', 0.5, 0.5, 0.5, 0.5),
-
-    -- Thirds
-    layout('7', 0, 0, 0.33, 1),
-    layout('8', 0.33, 0, 0.34, 1),
-    layout('9', 0.67, 0, 0.33, 1),
-
-    -- Centered
-    layout('\\', 0.1, 0.1, 0.8, 0.8),
-    layout('delete', 0.2, 0.2, 0.6, 0.6),
-
-    move('left', -1, 0),
-    move('right', 1, 0),
-    move('up', 0, -1),
-    move('down', 0, 1),
-
-    resize('h', -1, 0),
-    resize('l', 1, 0),
-    resize('k', 0, 1),
-    resize('j', 0, -1),
-
-    scale('=', config.resizeFactors.increase),
-    scale('-', config.resizeFactors.decrease),
-
-    -- ==================== SCREEN OPERATIONS ====================
-    screen('[', 'previous'),
-    screen(']', 'next'),
-
-    -- ==================== CONTROL OPERATIONS ====================
-    control('return', 'maximize'),
-    control('0', 'minimize'),
-    control('space', 'center'),
-}
-
---------------------------
--- Unified Key Binding
---------------------------
-for _, op in ipairs(windowOps) do
-    if op.repeatable then
-        bindRepeatKey(op.mod, op.key, op.run)
-    else
-        hs.hotkey.bind(op.mod, op.key, op.run)
-    end
-end
+-- absoluteTime은 절전 시간을 제외하므로 복귀 시 순환 상태 초기화
+-- require() 반환값으로 watcher를 유지해 GC로 중단되는 것을 방지
+return hs.caffeinate.watcher
+    .new(function(event)
+        if event == hs.caffeinate.watcher.systemDidWake then
+            lastCycle = nil
+        end
+    end)
+    :start()
