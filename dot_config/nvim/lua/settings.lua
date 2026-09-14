@@ -18,6 +18,8 @@ vim.o.termguicolors = true
 vim.o.winborder = 'rounded'
 vim.o.wrap = false
 
+vim.cmd.colorscheme 'catppuccin'
+
 vim.opt.shm:append("I")
 
 vim.diagnostic.config {

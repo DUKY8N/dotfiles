@@ -1,6 +1,5 @@
 vim.pack.add({
     { src = 'https://github.com/WhoIsSethDaniel/mason-tool-installer.nvim' },
-    { src = 'https://github.com/catppuccin/nvim', name = 'catppuccin' },
     { src = 'https://github.com/folke/snacks.nvim' },
     { src = 'https://github.com/folke/which-key.nvim' },
     { src = 'https://github.com/kylechui/nvim-surround' },
@@ -19,8 +18,6 @@ vim.pack.add({
     { src = 'https://github.com/stevearc/oil.nvim' },
     { src = 'https://github.com/uga-rosa/translate.nvim' },
 }, { load = true, confirm = false })
-
-vim.cmd.colorscheme 'catppuccin-mocha'
 
 -- Snacks
 require('snacks').setup(require 'plugins.snacks')
