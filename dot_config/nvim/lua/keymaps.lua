@@ -40,14 +40,6 @@ vim.keymap.set({ 'n', 'x' }, '<leader>cf', function()
     require('conform').format()
 end, { desc = 'Format' })
 
-vim.keymap.set('n', '[d', function()
-    vim.diagnostic.jump { count = -1 }
-end, { desc = 'Previous diagnostic' })
-
-vim.keymap.set('n', ']d', function()
-    vim.diagnostic.jump { count = 1 }
-end, { desc = 'Next diagnostic' })
-
 -- Git
 vim.keymap.set({ 'n', 'v' }, '<leader>gB', function()
     Snacks.gitbrowse()
@@ -64,13 +56,3 @@ vim.keymap.set({ 'n', 'x' }, '<leader>tk', '<cmd>Translate KO<cr>', { desc = 'Tr
 -- Pi
 vim.keymap.set('n', '<leader>ai', '<cmd>PiAsk<cr>', { desc = 'Ask pi' })
 vim.keymap.set('v', '<leader>ai', '<cmd>PiAskSelection<cr>', { desc = 'Ask pi (selection)' })
-
--- Neovim restart
-vim.keymap.set('n', '<leader>R', function()
-    local session = vim.fn.stdpath 'state' .. '/restart_session.vim'
-
-    vim.cmd('mksession! ' .. vim.fn.fnameescape(session))
-    vim.cmd('restart source ' .. vim.fn.fnameescape(session))
-end, {
-    desc = 'Restart Neovim',
-})

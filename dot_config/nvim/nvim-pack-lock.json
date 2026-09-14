@@ -44,10 +44,6 @@
       "rev": "1098d7b3c34adcfa7feb3289ee434529abd4afd1",
       "src": "https://github.com/kylechui/nvim-surround"
     },
-    "nvim-web-devicons": {
-      "rev": "2795c26c916bb3c57dde308b82be51971fa92747",
-      "src": "https://github.com/nvim-tree/nvim-web-devicons"
-    },
     "oil.nvim": {
       "rev": "0fcc83805ad11cf714a949c98c605ed717e0b83e",
       "src": "https://github.com/stevearc/oil.nvim"
@@ -55,10 +51,6 @@
     "pi.nvim": {
       "rev": "4ba6db0dd30406995a2e46e4f1ae39377e66e733",
       "src": "https://github.com/pablopunk/pi.nvim"
-    },
-    "plenary.nvim": {
-      "rev": "74b06c6c75e4eeb3108ec01852001636d85a932b",
-      "src": "https://github.com/nvim-lua/plenary.nvim"
     },
     "snacks.nvim": {
       "rev": "ad9ede6a9cddf16cedbd31b8932d6dcdee9b716e",
