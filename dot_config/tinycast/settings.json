@@ -43,7 +43,28 @@
       "/System/Library/CoreServices/Finder.app",
       "~/Applications"
     ],
-    "apps": {}
+    "apps": {
+      "com.anthropic.claudefordesktop": {
+        "shortcut": "hyper+/",
+        "alias": null,
+        "showInLauncher": true
+      },
+      "com.mitchellh.ghostty": {
+        "shortcut": "hyper+return",
+        "alias": null,
+        "showInLauncher": true
+      },
+      "com.openai.codex": {
+        "shortcut": "hyper+.",
+        "alias": null,
+        "showInLauncher": true
+      },
+      "md.obsidian": {
+        "shortcut": "hyper+o",
+        "alias": null,
+        "showInLauncher": true
+      }
+    }
   },
   "systemSettings": {
     "enabled": true,
@@ -128,12 +149,18 @@
     "commands": {}
   },
   "notes": {
-    "enabled": false,
+    "enabled": true,
     "rendersMarkdown": true,
-    "showsFormattingBar": true,
+    "showsFormattingBar": false,
     "showsInMenuBar": false,
-    "folder": null,
-    "commands": {}
+    "folder": "~/Documents/tinyMd",
+    "commands": {
+      "show-notes": {
+        "shortcut": "hyper+m",
+        "alias": null,
+        "showInLauncher": true
+      }
+    }
   },
   "snippets": {
     "showInLauncher": true,
@@ -212,7 +239,7 @@
   "clipboard": {
     "enabled": true,
     "retentionDays": 90,
-    "defaultAction": "paste",
+    "defaultAction": "pastePlainText",
     "disabledApps": [
       "com.apple.keychainaccess",
       "com.apple.Passwords"
@@ -220,6 +247,11 @@
     "commands": {
       "clipboard-history": {
         "shortcut": "hyper+v",
+        "alias": null,
+        "showInLauncher": true
+      },
+      "paste-sequentially": {
+        "shortcut": "ctrl+cmd+v",
         "alias": null,
         "showInLauncher": true
       }
