@@ -45,7 +45,7 @@
     ],
     "apps": {
       "com.anthropic.claudefordesktop": {
-        "shortcut": "hyper+/",
+        "shortcut": "hyper+.",
         "alias": null,
         "showInLauncher": true
       },
@@ -55,7 +55,7 @@
         "showInLauncher": true
       },
       "com.openai.codex": {
-        "shortcut": "hyper+.",
+        "shortcut": "hyper+,",
         "alias": null,
         "showInLauncher": true
       },
@@ -281,7 +281,13 @@
     "menuBarLinkedEventsOnly": true,
     "menuBarHidesWhenEmpty": false,
     "hideCurrentEventAfterMinutes": "never",
-    "commands": {}
+    "commands": {
+      "my-schedule": {
+        "shortcut": "hyper+;",
+        "alias": null,
+        "showInLauncher": true
+      }
+    }
   },
   "extensions": {
     "showInLauncher": true
