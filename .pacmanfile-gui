@@ -1,13 +1,19 @@
 bluetui
+brightnessctl
 chromium
 ghostty
 gnome-keyring
 keyd
 libsecret
+mako
 mpv
+obsidian
 papirus-icon-theme
 pipewire-jack
+playerctl
 rofi
+swaylock
+waybar
 zed
 
 adobe-source-han-sans-kr-fonts

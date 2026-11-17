@@ -21,6 +21,7 @@ brew "jq"
 brew "lazydocker"
 brew "lazygit"
 brew "lazysql"
+brew "media-info" # 미디어 정보 표시 (yazi에서 사용)
 brew "mise"
 brew "mpv"
 brew "navi"

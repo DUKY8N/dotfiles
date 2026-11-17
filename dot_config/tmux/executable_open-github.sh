@@ -9,7 +9,11 @@ if [[ $url == *github.com* ]]; then
     url="${url/:/\/}"
     url="https://$url"
   fi
-  open "$url"
+  if command -v open >/dev/null; then
+    open "$url"
+  else
+    xdg-open "$url"
+  fi
 else
   echo "This repository is not hosted on GitHub"
 fi
