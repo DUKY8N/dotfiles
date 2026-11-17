@@ -18,12 +18,17 @@ pacman_files+=("$source_dir/.pacmanfile-gui")
 yay_files+=("$source_dir/.yayfile-gui")
 {{- end }}
 
+# one package per line; "#" starts a comment
+read_packages() {
+  sed -e 's/#.*//' -e 's/[[:space:]]*$//' -e '/^$/d' "$@"
+}
+
 printf "\nSyncing Pacman packages...\n"
-mapfile -t pacman_pkgs < <(grep -vh '^[[:space:]]*$' "${pacman_files[@]}")
+mapfile -t pacman_pkgs < <(read_packages "${pacman_files[@]}")
 sudo pacman -S --needed "${pacman_pkgs[@]}"
 
 printf "\nSyncing AUR packages...\n"
-mapfile -t aur_pkgs < <(grep -vh '^[[:space:]]*$' "${yay_files[@]}")
+mapfile -t aur_pkgs < <(read_packages "${yay_files[@]}")
 if (( ${#aur_pkgs[@]} )); then
   yay -S --needed "${aur_pkgs[@]}"
 fi

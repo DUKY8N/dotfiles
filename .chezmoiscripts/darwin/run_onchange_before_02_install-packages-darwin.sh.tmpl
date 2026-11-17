@@ -6,4 +6,4 @@ set -euo pipefail
 eval "$(/opt/homebrew/bin/brew shellenv)"
 
 printf "\nSyncing Homebrew packages...\n"
-brew bundle --verbose --file="{{ .chezmoi.sourceDir }}/.brewfile"
+brew bundle --verbose --no-upgrade --file="{{ .chezmoi.sourceDir }}/.brewfile"
