@@ -1,0 +1,14 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# .pacmanfile hash: {{ include ".pacmanfile" | sha256sum }}
+# .yayfile hash: {{ include ".yayfile" | sha256sum }}
+
+printf "\nSyncing Pacman packages...\n"
+sudo pacman -S --needed - < "{{ .chezmoi.sourceDir }}/.pacmanfile"
+
+printf "\nSyncing AUR packages...\n"
+mapfile -t aur_pkgs < <(grep -v '^[[:space:]]*$' "{{ .chezmoi.sourceDir }}/.yayfile")
+if (( ${#aur_pkgs[@]} )); then
+  yay -S --needed "${aur_pkgs[@]}"
+fi

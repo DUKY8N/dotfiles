@@ -10,7 +10,6 @@ return {
         lua = { 'stylua' },
         markdown = { 'prettier' },
         python = { 'ruff', 'ruff_format' },
-        rust = { 'rustfmt', lsp_format = 'fallback' },
         scss = { 'prettier' },
         typescript = { 'prettier', timeout_ms = 500 },
         typescriptreact = { 'prettier', timeout_ms = 500 },

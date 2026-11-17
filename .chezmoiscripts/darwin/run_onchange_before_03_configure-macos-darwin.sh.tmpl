@@ -1,0 +1,6 @@
+#!/usr/bin/env bash
+
+# .macos hash: {{ include ".macos" | sha256sum }}
+
+printf '\nCustomizing macOS preferences...\n'
+bash "{{ .chezmoi.sourceDir }}/.macos"

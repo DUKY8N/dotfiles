@@ -10,15 +10,19 @@ README.md
 {{ if ne .chezmoi.os "darwin" -}}
 # macOS specific files - ignore on non-macOS systems
 .hammerspoon/
+.hushlogin
+.chezmoiscripts/darwin/**
 {{- end }}
 
 {{ if ne .chezmoi.os "linux" -}}
 # Linux specific files - ignore on non-Linux systems
 .local/share/applications/
+.chezmoiscripts/linux/**
 {{- end }}
 
 {{ if ne .chezmoi.os "windows" -}}
 # Windows specific files - ignore on non-Windows systems
 Documents/
 .local/share/win-startup/
+.chezmoiscripts/windows/**
 {{- end }}

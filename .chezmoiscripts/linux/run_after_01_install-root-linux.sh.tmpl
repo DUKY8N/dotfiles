@@ -1,0 +1,42 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# Copies everything under .root/ to / as root-owned files.
+
+ROOT_DIR="{{ .chezmoi.sourceDir }}/.root"
+
+[[ -d "$ROOT_DIR" ]] || exit 0
+
+changed=0
+
+install_file() {
+  local source="$1"
+  local target="/${source#"$ROOT_DIR"/}"
+
+  [[ -d "$target" && ! -L "$target" ]] && return 0
+
+  if [[ -L "$target" ]]; then
+    # left over from when these were symlinks into the source directory
+    sudo rm -- "$target"
+  elif [[ -e "$target" ]]; then
+    cmp -s -- "$source" "$target" && return 0
+    # keep the first replaced version once
+    [[ -e "${target}.orig" ]] || sudo cp -p -- "$target" "${target}.orig"
+  fi
+
+  sudo install -D -m 644 -o root -g root -- "$source" "$target"
+  changed=1
+}
+
+while IFS= read -r -d '' path; do
+  install_file "$path"
+done < <(find "$ROOT_DIR" -type f -print0)
+
+# keyd
+if command -v keyd >/dev/null && [[ -d /run/systemd/system ]]; then
+  if ! systemctl is-enabled --quiet keyd; then
+    sudo systemctl enable --now keyd
+  elif (( changed )); then
+    sudo keyd reload || true
+  fi
+fi

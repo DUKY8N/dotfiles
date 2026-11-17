@@ -1,4 +1,3 @@
-{{ if eq .chezmoi.os "windows" -}}
 if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdentity]::GetCurrent()).IsInRole([Security.Principal.WindowsBuiltInRole] "Administrator")) {
     Write-Host "Administrator privileges required. Requesting elevation..."
 
@@ -7,4 +6,3 @@ if (-NOT ([Security.Principal.WindowsPrincipal] [Security.Principal.WindowsIdent
 } else {
     reg import "{{ .chezmoi.sourceDir }}\.assets\windows-registry\shift-space-ime.reg"
 }
-{{- end }}

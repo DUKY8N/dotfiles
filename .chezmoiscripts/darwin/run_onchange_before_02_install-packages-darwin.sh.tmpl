@@ -1,0 +1,9 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# .brewfile hash: {{ include ".brewfile" | sha256sum }}
+
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+printf "\nSyncing Homebrew packages...\n"
+brew bundle --verbose --file="{{ .chezmoi.sourceDir }}/.brewfile"

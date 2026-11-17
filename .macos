@@ -91,6 +91,10 @@ defaults write com.apple.menuextra.battery ShowPercent -int 1
 # spotlight 메뉴바에서 감추기
 defaults -currentHost write com.apple.Spotlight MenuItemHidden -int 1
 
+# 윈도우
+# cmd + ctrl + 클릭으로 창 어디서나 드래그
+defaults write -g NSWindowShouldDragOnGesture -bool true
+
 killall Dock
 killall Finder
 killall SystemUIServer

@@ -1,0 +1,2 @@
+# .wingetfile.json hash: {{ include ".wingetfile.json" | sha256sum }}
+winget import -i "{{ .chezmoi.sourceDir }}\.wingetfile.json" --accept-package-agreements --accept-source-agreements

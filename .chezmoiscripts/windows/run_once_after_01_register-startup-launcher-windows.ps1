@@ -1,4 +1,3 @@
-{{ if eq .chezmoi.os "windows" -}}
 $startupDir = [Environment]::GetFolderPath("Startup")
 $cmdPath = Join-Path $startupDir "chezmoi-startup.cmd"
 
@@ -8,4 +7,3 @@ powershell.exe -NoProfile -ExecutionPolicy Bypass -File "%USERPROFILE%\.local\sh
 "@
 
 Set-Content -Path $cmdPath -Value $cmd -Encoding ASCII
-{{- end }}

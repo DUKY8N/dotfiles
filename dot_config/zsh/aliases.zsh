@@ -21,9 +21,5 @@ alias vim="nvim"
 # zoxide
 alias cd='z'
 
-# package management alias
-alias pkgi="pkgman i"
-alias pkge="pkgman e"
-
 # opencode
 alias ocd="opencode"

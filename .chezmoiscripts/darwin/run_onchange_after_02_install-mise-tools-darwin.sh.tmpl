@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+set -euo pipefail
+
+# mise config hash: {{ include "dot_config/mise/config.toml" | sha256sum }}
+
+eval "$(/opt/homebrew/bin/brew shellenv)"
+
+mise install
