@@ -1,3 +1,9 @@
+{{- $wsl := false -}}
+{{- if eq .chezmoi.os "linux" -}}
+{{-   if .chezmoi.kernel.osrelease | lower | contains "microsoft" -}}
+{{-     $wsl = true -}}
+{{-   end -}}
+{{- end -}}
 README.md
 
 {{ if eq .chezmoi.os "windows" -}}
@@ -25,4 +31,9 @@ README.md
 Documents/
 .local/share/win-startup/
 .chezmoiscripts/windows/**
+{{- end }}
+
+{{ if or (ne .chezmoi.os "linux") $wsl -}}
+# Linux desktop scripts - ignore on non-Linux systems and on WSL
+.chezmoiscripts/linux-desktop/**
 {{- end }}

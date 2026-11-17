@@ -1,14 +1,29 @@
 #!/usr/bin/env bash
 set -euo pipefail
+{{- $wsl := .chezmoi.kernel.osrelease | lower | contains "microsoft" }}
 
 # .pacmanfile hash: {{ include ".pacmanfile" | sha256sum }}
 # .yayfile hash: {{ include ".yayfile" | sha256sum }}
+{{- if not $wsl }}
+# .pacmanfile-gui hash: {{ include ".pacmanfile-gui" | sha256sum }}
+# .yayfile-gui hash: {{ include ".yayfile-gui" | sha256sum }}
+{{- end }}
+
+source_dir="{{ .chezmoi.sourceDir }}"
+pacman_files=("$source_dir/.pacmanfile")
+yay_files=("$source_dir/.yayfile")
+{{- if not $wsl }}
+# desktop packages, skipped on WSL
+pacman_files+=("$source_dir/.pacmanfile-gui")
+yay_files+=("$source_dir/.yayfile-gui")
+{{- end }}
 
 printf "\nSyncing Pacman packages...\n"
-sudo pacman -S --needed - < "{{ .chezmoi.sourceDir }}/.pacmanfile"
+mapfile -t pacman_pkgs < <(grep -vh '^[[:space:]]*$' "${pacman_files[@]}")
+sudo pacman -S --needed "${pacman_pkgs[@]}"
 
 printf "\nSyncing AUR packages...\n"
-mapfile -t aur_pkgs < <(grep -v '^[[:space:]]*$' "{{ .chezmoi.sourceDir }}/.yayfile")
+mapfile -t aur_pkgs < <(grep -vh '^[[:space:]]*$' "${yay_files[@]}")
 if (( ${#aur_pkgs[@]} )); then
   yay -S --needed "${aur_pkgs[@]}"
 fi
