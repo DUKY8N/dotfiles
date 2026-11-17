@@ -1,16 +1,12 @@
 #!/usr/bin/env bash
 
 apps=(
-  "ice"
   "flow"
   "adguard"
   "keepingyouawake"
   "hammerspoon"
   "cleanshot x"
   "betterdisplay"
-  "deepl"
-  "mission control plus"
-  "lookupper"
   "klack"
 )
 

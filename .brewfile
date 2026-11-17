@@ -36,10 +36,8 @@ brew "starship"
 brew "stylua"
 brew "swiftly"
 brew "tealdeer" # tldr
-brew "thefuck"
 brew "tig"
 brew "tmux"
-brew "up"
 brew "uv"
 brew "vivid" # LS_COLORS 테마 적용 도구
 brew "yazi"
@@ -47,34 +45,21 @@ brew "yt-dlp"
 brew "zoxide"
 
 cask "adguard"
-cask "adobe-digital-editions"
 cask "anki"
-cask "antinote"
-cask "audacity"
 cask "betterdisplay"
 cask "calibre"
 cask "chatgpt"
-cask "chatgpt-atlas"
 cask "cleanshot"
-cask "codex"
-cask "deepl"
 cask "discord"
 cask "ghostty"
-cask "gimp"
 cask "google-chrome"
 cask "hammerspoon"
-cask "hyperkey"
 cask "iina"
-cask "jordanbaird-ice"
 cask "keepingyouawake"
-cask "krita"
-cask "logseq"
 cask "mac-mouse-fix"
-cask "mission-control-plus"
 cask "obsidian"
 cask "ollama-app"
 cask "raindropio"
-cask "runjs"
 cask "visual-studio-code"
 cask "zed"
 cask "zen"
@@ -86,13 +71,7 @@ cask "font-pretendard"
 cask "font-sarasa-gothic"
 cask "font-symbols-only-nerd-font"
 
-mas "BandiNamer", id: 6451223045
 mas "Bandizip", id: 1265704574
 mas "Flow", id: 1423210932
-mas "Gifski", id: 1351639930
 mas "KakaoTalk", id: 869223134
 mas "Klack", id: 6446206067
-mas "Lookupper", id: 1667225994
-mas "OwlOCR", id: 6462355119
-mas "Subscriptions", id: 1577082754
-mas "Things", id: 904280696

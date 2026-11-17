@@ -23,9 +23,6 @@ eval "$(zoxide init zsh)"
 # starship
 eval "$(starship init zsh)"
 
-# thefuck
-eval "$(thefuck --alias)"
-
 # yazi
 y() {
   local tmp cwd
